@@ -49,19 +49,26 @@ int main() {
   const char* fragment_source =
       "#version 330 core\n"
       "out vec4 outColor;\n"
+      "uniform float uTime;\n"
       "void main() {\n"
-      "   outColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
+      "   outColor = vec4(1.0, sin(uTime), 0.0, 1.0);\n"
       "}\n";
 
   Shader vertex_shader(vertex_source, ShaderType::VERTEX);
   Shader fragment_shader(fragment_source, ShaderType::FRAGMENT);
   Program program(vertex_shader, fragment_shader);
 
+  float elapsed_time = 0;
+
   while (!glfwWindowShouldClose(window)) {
+    elapsed_time = static_cast<float>(glfwGetTime());
+
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
     program.bind();
+    program.set_uniform<float>("uTime", elapsed_time);
+
     mesh.bind();
 
     glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
