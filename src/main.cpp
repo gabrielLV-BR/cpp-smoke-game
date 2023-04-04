@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdint>
+#include <vector>
 
-#include "renderer/buffer.hpp"
 #include "renderer/mesh.hpp"
 
 #include "glad/glad.h"
@@ -35,38 +35,13 @@ int main() {
         return -1;
     }
 
-    uint32_t vao, vbo, ebo;
-
-    float vertices[] = {
+    Mesh mesh({
         -0.5, -0.5, 0.0,
         0.0, 0.5, 0.0,
         0.5, -0.5, 0.0
-    };
-
-    uint32_t indices[] = {
+    }, {
         0, 1, 2
-    };
-
-    // vao creation
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glGenBuffers(1, &ebo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-    // shader creation
+    });
 
     const char* vertex_source = 
         "#version 330 core\n"
@@ -98,8 +73,8 @@ int main() {
     glAttachShader(program, fragment_shader);
     glLinkProgram(program);
 
-    // glDeleteShader(vertex_shader);
-    // glDeleteShader(fragment_shader);
+    glDeleteShader(vertex_shader);
+    glDeleteShader(fragment_shader);
 
     while(!glfwWindowShouldClose(window)) {
 
@@ -107,7 +82,8 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(program);
-        glBindVertexArray(vao);
+
+        mesh.bind();
 
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 

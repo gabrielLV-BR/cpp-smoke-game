@@ -11,15 +11,11 @@ struct Buffer {
     uint32_t target;
 
     Buffer(){}
-    Buffer(uint32_t target, std::vector<T>& data)
-        : target(target), data(std::move(data)) {
+    Buffer(uint32_t target, std::vector<T> data)
+        : target(target), data(data) {
         glGenBuffers(1, &handle);
         glBindBuffer(target, handle);
         glBufferData(target, data.size() * sizeof(T), data.data(), GL_STATIC_DRAW);
-    }
-
-    ~Buffer() {
-        glDeleteBuffers(1, &handle);        
     }
 
     void bind() {
@@ -29,5 +25,10 @@ struct Buffer {
     void unbind() {
         glBindBuffer(target, 0);
     }
+
+    void destroy() {
+        glDeleteBuffers(1, &handle);        
+    }
+
 };
 
