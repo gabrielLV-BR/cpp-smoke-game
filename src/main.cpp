@@ -5,6 +5,10 @@
 #include "renderer/mesh.hpp"
 #include "renderer/program.hpp"
 #include "renderer/shader.hpp"
+#include "renderer/vertex.hpp"
+
+#include "loaders/obj_loader.hpp"
+#include "physics/vector.hpp"
 
 #include <GLFW/glfw3.h>
 #include "glad/glad.h"
