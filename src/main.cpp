@@ -1,5 +1,7 @@
 #include <cstdint>
+#include <fstream>
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "renderer/mesh.hpp"
@@ -12,18 +14,6 @@
 
 #include <GLFW/glfw3.h>
 #include "glad/glad.h"
-
-void check_compilation_status(uint32_t shader) {
-  int success;
-  char log[512];
-
-  glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-
-  if (!success) {
-    glGetShaderInfoLog(shader, 512, NULL, log);
-    std::cout << "[ERROR COMPILING SHADER!]\t" << log << "\n";
-  }
-}
 
 int main() {
   glfwInit();
@@ -41,7 +31,12 @@ int main() {
     return -1;
   }
 
-  Mesh mesh({-0.5, -0.5, 0.0, 0.0, 0.5, 0.0, 0.5, -0.5, 0.0}, {0, 1, 2});
+  ObjLoaderConfig config(ASSETS "models/dice/");
+  ObjLoader loader(config);
+
+  loader.load("dice.obj");
+
+  Mesh mesh(loader.vertices, loader.indices);
 
   const char* vertex_source =
       "#version 330 core\n"

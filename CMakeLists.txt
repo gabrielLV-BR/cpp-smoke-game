@@ -15,6 +15,7 @@ add_executable(
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
-target_include_directories(${PROJECT_NAME} PRIVATE "${SOURCE_DIR}/" "${MODULES_DIR}")
+target_compile_definitions(${PROJECT_NAME} PRIVATE ASSETS="${CMAKE_SOURCE_DIR}/assets/")
+target_include_directories(${PROJECT_NAME} PRIVATE "${SOURCE_DIR}" "${MODULES_DIR}")
 
 add_subdirectory(tests/)
