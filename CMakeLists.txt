@@ -4,6 +4,8 @@ project(game)
 set("SOURCE_DIR" "${CMAKE_SOURCE_DIR}/src/")
 set("MODULES_DIR" "${CMAKE_SOURCE_DIR}/modules/")
 
+enable_testing()
+
 add_subdirectory(modules/glfw)
 
 add_executable(

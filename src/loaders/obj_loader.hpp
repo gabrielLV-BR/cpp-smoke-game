@@ -72,7 +72,6 @@ class ObjLoader {
     // TODO interlace separate vertex data into single vertex struct
   }
 
- private:
   void load_vertex(const std::string& line) {
     switch (line[1]) {
       case ' ':
@@ -114,8 +113,8 @@ class ObjLoader {
   //
 
   Vector3 parse_vector3(const std::string& line, int start, int end) {
-    int first_space = line.find(" ");
-    int last_space = line.rfind(" ");
+    int first_space = line.find(" ", start);
+    int last_space = line.rfind(" ", end);
 
     std::string a = line.substr(start, first_space);
     std::string b = line.substr(first_space + 1, last_space);
@@ -129,7 +128,7 @@ class ObjLoader {
   }
 
   Vector2 parse_vector2(const std::string& line, int start, int end) {
-    int first_space = line.find(" ");
+    int first_space = line.find(" ", start);
 
     std::string a = line.substr(start, first_space);
     std::string b = line.substr(first_space + 1, end);
