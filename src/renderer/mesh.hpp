@@ -8,10 +8,10 @@
 
 struct Mesh {
   uint32_t vao;
-  Buffer<Vertex> vertex_buffer;
+  Buffer<Vector3> vertex_buffer;
   Buffer<uint32_t> index_buffer;
 
-  Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices)
+  Mesh(std::vector<Vector3> vertices, std::vector<uint32_t> indices)
       : vertex_buffer(GL_ARRAY_BUFFER, vertices),
         index_buffer(GL_ELEMENT_ARRAY_BUFFER, indices) {
     glGenVertexArrays(1, &vao);

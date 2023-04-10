@@ -10,9 +10,10 @@ struct Vector3 {
     return this->x == other.x && this->y == other.y && this->z == other.z;
   }
 
-  union {
-    float data[3];
-  };
+  std::string to_string() const {
+    return "Vector3(" + std::to_string(x) + ", " + std::to_string(y) + ", " +
+           std::to_string(z) + ")\n";
+  }
 };
 
 struct Vector2 {
@@ -24,8 +25,4 @@ struct Vector2 {
   bool operator==(const Vector2& other) const {
     return this->x == other.x && this->y == other.y;
   }
-
-  union {
-    float data[2];
-  };
 };

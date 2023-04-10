@@ -1,9 +1,8 @@
 #pragma once
 
+#include <stdio.h>
 #include <cstdint>
 #include <fstream>
-#include <iostream>
-#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -14,8 +13,7 @@
 struct ObjLoaderConfig {
   std::string folder;
 
-  ObjLoaderConfig(std::string folder)
-      : folder(ensure_trailing_backslash(folder)) {}
+  ObjLoaderConfig(std::string folder) : folder(folder) {}
 
  private:
   std::string ensure_trailing_backslash(std::string folder) {
@@ -52,18 +50,14 @@ class ObjLoader {
   void load(const std::string name) {
     std::string model_path = config.folder + name;
     std::string line;
-    std::ifstream file(model_path, std::ios::in);
+    line.reserve(50);
 
-    if (file.is_open()) {
-      if (file.peek() == std::ifstream::traits_type::eof()) {
-        std::cout << "[ERROR] File is empty\n";
-      }
-    } else {
-      std::cout << "[ERROR] File wasn't opened\n";
-    }
+    FILE* file = fopen(model_path.c_str(), "r");
 
-    while (std::getline(file, line)) {
-      std::cout << "Line: " << line;
+    char c_line[50];
+    while (fgets(c_line, 50, file)) {
+      line = c_line;
+
       switch (line[0]) {
         case '#':
           continue;  // comment
@@ -87,6 +81,8 @@ class ObjLoader {
       }
     }
 
+    fclose(file);
+
     // load vertices and indices
 
     for (const auto& face : faces) {
@@ -103,25 +99,25 @@ class ObjLoader {
   }
 
   Vector3 parse_vector3(const std::string& line, int start, int end) {
-    const int first_space = line.find(" ", start);
-    const int last_space = line.rfind(" ", end);
+    int first_space = line.find(" ", start);
+    int last_space = line.rfind(" ", end);
 
-    const std::string a = line.substr(start, first_space);
-    const std::string b = line.substr(first_space + 1, last_space);
-    const std::string c = line.substr(last_space + 1, end);
+    std::string a = line.substr(start, first_space - start);
+    std::string b = line.substr(first_space + 1, last_space - first_space - 1);
+    std::string c = line.substr(last_space + 1, end - last_space - 1);
 
     const float x = std::stof(a);
     const float y = std::stof(b);
     const float z = std::stof(c);
 
-    return Vector3{x, y, z};
+    return Vector3(x, y, z);
   }
 
   Vector2 parse_vector2(const std::string& line, int start, int end) {
     const int first_space = line.find(" ", start);
 
-    const std::string a = line.substr(start, first_space);
-    const std::string b = line.substr(first_space + 1, end);
+    const std::string a = line.substr(start, first_space - start);
+    const std::string b = line.substr(first_space + 1, end - first_space - 1);
 
     const float x = std::stof(a);
     const float y = std::stof(b);
@@ -163,28 +159,35 @@ class ObjLoader {
     }
   }
 
-  void load_face(const std::string& line) {
-    int last_space_pos = 0;
-    int first_divider_pos = 0;
-    int second_divider_pos = 0;
-    int next_space_pos = 0;
+  void load_face(const std::string& face) {
+    using std::string;
+
     int vertex_index = 0;
     int normal_index = 0;
     int uv_index = 0;
 
-    while (last_space_pos != std::string::npos) {
-      first_divider_pos = line.find("/", last_space_pos);
-      second_divider_pos = line.find("/", last_space_pos);
-      next_space_pos = line.find_first_of(" \n", last_space_pos);
+    int first_space = 0;
+    int second_space = 0;
 
-      vertex_index = std::stoi(line.substr(last_space_pos, first_divider_pos));
-      normal_index =
-          std::stoi(line.substr(first_divider_pos + 1, second_divider_pos));
-      uv_index = std::stoi(line.substr(second_divider_pos + 1, next_space_pos));
+    for (int i = 0; i < 3; i++) {
+      first_space = face.find(" ", first_space + 1);
+      second_space = face.find_first_of(" \n", first_space + 1);
+
+      int first_separator = face.find("/", first_space);
+      int second_separator = face.rfind("/", second_space);
+
+      string vertex_index_string =
+          face.substr(first_space + 1, first_separator - first_space - 1);
+      string normal_index_string = face.substr(
+          first_separator + 1, second_separator - first_separator - 1);
+      string uvcoord_index_string = face.substr(
+          second_separator + 1, second_space - second_separator - 1);
+
+      uint32_t vertex_index = std::stoi(vertex_index_string);
+      uint32_t normal_index = std::stoi(normal_index_string);
+      uint32_t uv_index = std::stoi(uvcoord_index_string);
 
       faces.emplace_back(vertex_index, normal_index, uv_index);
-
-      last_space_pos = next_space_pos;
     }
   }
 
