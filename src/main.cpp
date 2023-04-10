@@ -36,19 +36,15 @@ int main() {
 
   loader.load("dice.obj");
 
-  for (const auto& v : loader.vertex_positions) {
-    std::cout << v.to_string() << "\n";
-  }
-
-  Mesh mesh(loader.vertex_positions, loader.indices);
+  Mesh mesh(loader.vertices, loader.indices);
 
   const char* vertex_source =
       "#version 330 core\n"
       "layout(location=0) in vec3 inPos;\n"
       "layout(location=1) in vec3 inNormal;\n"
-      "layout(location=2) in vec2 inUV;"
+      "layout(location=2) in vec2 inUV;\n"
       "void main() {\n"
-      "   gl_Position = vec4(inPos, 1.0);\n"
+      "   gl_Position = vec4(inPos / 10, 1.0);\n"
       "}\n";
 
   const char* fragment_source =
@@ -76,7 +72,7 @@ int main() {
 
     mesh.bind();
 
-    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, mesh.num_indices(), GL_UNSIGNED_INT, 0);
 
     glfwPollEvents();
     glfwSwapBuffers(window);
