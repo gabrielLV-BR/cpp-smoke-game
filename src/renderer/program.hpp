@@ -3,6 +3,8 @@
 #include <string>
 
 #include "glad/glad.h"
+#include "glm/gtc/type_ptr.hpp"
+#include "glm/mat4x4.hpp"
 
 #include "./shader.hpp"
 
@@ -47,5 +49,9 @@ struct Program {
 
   void _internal_set_uniform(int location, float value) {
     glUniform1f(location, value);
+  }
+
+  void _internal_set_uniform(int location, const glm::mat4& mat) {
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
   }
 };

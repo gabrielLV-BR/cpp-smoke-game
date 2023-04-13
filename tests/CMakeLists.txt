@@ -1,3 +1,5 @@
+enable_testing()
+
 find_package(GTest)
 
 set("TEST_DIR" "${CMAKE_SOURCE_DIR}/")

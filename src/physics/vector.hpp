@@ -1,5 +1,7 @@
 #pragma once
 
+#include <unordered_map>
+
 struct Vector3 {
   float x, y, z;
 
@@ -14,6 +16,11 @@ struct Vector3 {
     return "Vector3(" + std::to_string(x) + ", " + std::to_string(y) + ", " +
            std::to_string(z) + ")\n";
   }
+
+  std::size_t hash() const {
+    using std::hash;
+    return hash<float>()(x) ^ hash<float>()(y) ^ hash<float>()(z);
+  }
 };
 
 struct Vector2 {
@@ -24,5 +31,10 @@ struct Vector2 {
 
   bool operator==(const Vector2& other) const {
     return this->x == other.x && this->y == other.y;
+  }
+
+  std::size_t hash() const {
+    using std::hash;
+    return hash<float>()(x) ^ hash<float>()(y);
   }
 };

@@ -88,6 +88,9 @@ class ObjLoader {
     for (const auto& face : faces) {
       Vertex v(vertex_positions[face.position_index],
                vertex_normals[face.normal_index], vertex_uvs[face.uv_index]);
+
+      // vertices.push_back(v);
+      // indices.push_back(face.position_index);
       insert_vertex(v);
     }
 
@@ -187,6 +190,7 @@ class ObjLoader {
       uint32_t normal_index = std::stoi(normal_index_string);
       uint32_t uv_index = std::stoi(uvcoord_index_string);
 
+      // indices.emplace_back(vertex_index);
       faces.emplace_back(vertex_index, normal_index, uv_index);
     }
   }

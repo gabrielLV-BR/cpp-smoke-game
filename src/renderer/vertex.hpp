@@ -15,13 +15,12 @@ struct Vertex {
 
 struct VertexHash {
   size_t operator()(const Vertex& v) const {
-    return std::hash<float>()(v.position.x) ^ std::hash<float>()(v.position.y) ^
-           std::hash<float>()(v.position.z);
+    return v.position.hash() ^ v.normal.hash() ^ v.uv.hash();
   };
 };
 
 struct VertexEqual {
   bool operator()(const Vertex& a, const Vertex& b) const {
-    return a.position == b.position;
+    return a.position == b.position && a.normal == b.normal && a.uv == b.uv;
   };
 };

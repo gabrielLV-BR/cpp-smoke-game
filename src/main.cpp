@@ -12,8 +12,15 @@
 #include "loaders/obj_loader.hpp"
 #include "physics/vector.hpp"
 
-#include <GLFW/glfw3.h>
+#include "GLFW/glfw3.h"
 #include "glad/glad.h"
+
+#include "glm/ext/matrix_clip_space.hpp"  // glm::perspective
+#include "glm/ext/matrix_transform.hpp"  // glm::translate, glm::rotate, glm::scale
+#include "glm/ext/scalar_constants.hpp"  // glm::pi
+#include "glm/mat4x4.hpp"                // glm::mat4
+#include "glm/vec3.hpp"                  // glm::vec3
+#include "glm/vec4.hpp"                  // glm::vec4
 
 int main() {
   glfwInit();
@@ -31,6 +38,10 @@ int main() {
     return -1;
   }
 
+  glm::mat4 model_matrix = glm::mat4(1.0f);
+  model_matrix = glm::rotate(model_matrix, glm::radians(45.0f),
+                             glm::vec3(-1.0f, 0.0f, 0.0f));
+
   ObjLoaderConfig config(ASSETS "models/dice/");
   ObjLoader loader(config);
 
@@ -43,8 +54,9 @@ int main() {
       "layout(location=0) in vec3 inPos;\n"
       "layout(location=1) in vec3 inNormal;\n"
       "layout(location=2) in vec2 inUV;\n"
+      "uniform mat4 uModel;\n"
       "void main() {\n"
-      "   gl_Position = vec4(inPos / 10, 1.0);\n"
+      "   gl_Position = uModel * vec4(inPos / 10, 1.0);\n"
       "}\n";
 
   const char* fragment_source =
@@ -67,8 +79,12 @@ int main() {
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    model_matrix = glm::rotate(glm::mat4(1.0), (float)glfwGetTime(),
+                               glm::vec3(0.0, 1.0, 0.0));
+
     program.bind();
     program.set_uniform<float>("uTime", elapsed_time);
+    program.set_uniform<glm::mat4>("uModel", model_matrix);
 
     mesh.bind();
 
