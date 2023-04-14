@@ -4,8 +4,8 @@ in vec2 aUV;
 out vec4 outColor;
 
 uniform float uTime;
+uniform sampler2D uTexture;
 
 void main() {
-//   outColor = vec4(1.0, sin(uTime), 0.0, 1.0);
-   outColor = vec4(aUV, 1.0, 1.0);
+   outColor = texture(uTexture, aUV);
 }

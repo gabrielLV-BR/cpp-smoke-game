@@ -7,6 +7,7 @@
 #include "renderer/mesh.hpp"
 #include "renderer/program.hpp"
 #include "renderer/shader.hpp"
+#include "renderer/texture.hpp"
 #include "renderer/vertex.hpp"
 
 #include "loaders/obj_loader.hpp"
@@ -63,6 +64,8 @@ int main() {
 
   Mesh mesh(loader.vertices, loader.indices);
 
+  Texture texture = Texture::from_file(ASSETS "models/dice/dice.png");
+
   std::string vertex_source =
       utils::read_file_contents(ASSETS "shaders/basic.vert.glsl");
 
@@ -85,9 +88,12 @@ int main() {
                                glm::vec3(0.2, 1.0, 0.0));
 
     program.bind();
+
     program.set_uniform<float>("uTime", elapsed_time);
     program.set_uniform<glm::mat4>("uModel", model_matrix);
+    program.set_uniform<int>("uTexture", 0);
 
+    texture.bind();
     mesh.bind();
 
     glDrawElements(GL_TRIANGLES, mesh.index_count(), GL_UNSIGNED_INT, 0);
