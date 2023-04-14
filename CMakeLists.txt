@@ -6,7 +6,10 @@ set("MODULES_DIR" "${CMAKE_SOURCE_DIR}/modules/")
 
 add_executable(
     ${PROJECT_NAME}
-    src/main.cpp    
+    src/main.cpp
+    
+    src/utils/file.cpp
+
     modules/glad/glad.c
 )
 

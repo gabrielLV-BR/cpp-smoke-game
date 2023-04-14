@@ -12,15 +12,17 @@
 #include "loaders/obj_loader.hpp"
 #include "physics/vector.hpp"
 
+#include "utils/file.hpp"
+
 #include "GLFW/glfw3.h"
 #include "glad/glad.h"
 
-#include "glm/ext/matrix_clip_space.hpp"  // glm::perspective
-#include "glm/ext/matrix_transform.hpp"  // glm::translate, glm::rotate, glm::scale
-#include "glm/ext/scalar_constants.hpp"  // glm::pi
-#include "glm/mat4x4.hpp"                // glm::mat4
-#include "glm/vec3.hpp"                  // glm::vec3
-#include "glm/vec4.hpp"                  // glm::vec4
+#include "glm/ext/matrix_clip_space.hpp"
+#include "glm/ext/matrix_transform.hpp"
+#include "glm/ext/scalar_constants.hpp"
+#include "glm/mat4x4.hpp"
+#include "glm/vec3.hpp"
+#include "glm/vec4.hpp"
 
 int main() {
   const int WIDTH = 500;
@@ -54,34 +56,18 @@ int main() {
   model_matrix = glm::rotate(model_matrix, glm::radians(45.0f),
                              glm::vec3(-1.0f, 0.0f, 0.0f));
 
-  ObjLoaderConfig config(ASSETS "suzanne/");
+  ObjLoaderConfig config(ASSETS "models/suzanne/");
   ObjLoader loader(config);
 
   loader.load("suzanne.obj");
 
   Mesh mesh(loader.vertices, loader.indices);
 
-  const char* vertex_source =
-      "#version 330 core\n"
-      "layout(location=0) in vec3 inPos;\n"
-      "layout(location=1) in vec3 inNor;\n"
-      "layout(location=2) in vec2 inUV;\n"
-      "out vec2 aUV;"
-      "uniform mat4 uModel;\n"
-      "void main() {\n"
-      "   gl_Position = uModel * vec4(inPos / 2, 1.0);\n"
-      "   aUV = inUV;\n"
-      "}\n";
+  std::string vertex_source =
+      utils::read_file_contents(ASSETS "shaders/basic.vert.glsl");
 
-  const char* fragment_source =
-      "#version 330 core\n"
-      "in vec2 aUV;\n"
-      "out vec4 outColor;\n"
-      "uniform float uTime;\n"
-      "void main() {\n"
-      "//   outColor = vec4(1.0, sin(uTime), 0.0, 1.0);\n"
-      "   outColor = vec4(aUV, 1.0, 1.0);\n"
-      "}\n";
+  std::string fragment_source =
+      utils::read_file_contents(ASSETS "shaders/basic.frag.glsl");
 
   Shader vertex_shader(vertex_source, ShaderType::VERTEX);
   Shader fragment_shader(fragment_source, ShaderType::FRAGMENT);
