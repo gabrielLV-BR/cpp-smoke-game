@@ -45,19 +45,19 @@ int main() {
   glViewport(0, 0, WIDTH, HEIGHT);
   // depth testing
   glEnable(GL_DEPTH_TEST);
-  glDepthFunc(GL_ALWAYS);
+  glDepthFunc(GL_LESS);
   // face culling
   glEnable(GL_CULL_FACE);
-  glCullFace(GL_BACK);
+  glCullFace(GL_FRONT);
 
   glm::mat4 model_matrix = glm::mat4(1.0f);
   model_matrix = glm::rotate(model_matrix, glm::radians(45.0f),
                              glm::vec3(-1.0f, 0.0f, 0.0f));
 
-  ObjLoaderConfig config(ASSETS "models/dice/");
+  ObjLoaderConfig config(ASSETS "suzanne/");
   ObjLoader loader(config);
 
-  loader.load("dice.obj");
+  loader.load("suzanne.obj");
 
   Mesh mesh(loader.vertices, loader.indices);
 
@@ -69,7 +69,7 @@ int main() {
       "out vec2 aUV;"
       "uniform mat4 uModel;\n"
       "void main() {\n"
-      "   gl_Position = uModel * vec4(inPos / 10, 1.0);\n"
+      "   gl_Position = uModel * vec4(inPos / 2, 1.0);\n"
       "   aUV = inUV;\n"
       "}\n";
 
@@ -92,11 +92,11 @@ int main() {
   while (!glfwWindowShouldClose(window)) {
     elapsed_time = static_cast<float>(glfwGetTime());
 
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(1.0, 1.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     model_matrix = glm::rotate(glm::mat4(1.0), (float)glfwGetTime(),
-                               glm::vec3(0.0, 1.0, 0.0));
+                               glm::vec3(0.2, 1.0, 0.0));
 
     program.bind();
     program.set_uniform<float>("uTime", elapsed_time);
