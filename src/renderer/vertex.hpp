@@ -2,6 +2,7 @@
 
 #include <string>
 #include <unordered_map>
+
 #include "physics/vector.hpp"
 
 struct Vertex {
@@ -11,16 +12,15 @@ struct Vertex {
 
   Vertex(Vector3 position, Vector3 normal, Vector2 uv)
       : position(position), normal(normal), uv(uv) {}
+
+  bool operator==(const Vertex& a) const {
+    return a.position == position && a.normal == normal && a.uv == uv;
+  };
 };
 
-struct VertexHash {
+template <>
+struct std::hash<Vertex> {
   size_t operator()(const Vertex& v) const {
-    return v.position.hash() ^ v.normal.hash() ^ v.uv.hash();
-  };
-};
-
-struct VertexEqual {
-  bool operator()(const Vertex& a, const Vertex& b) const {
-    return a.position == b.position && a.normal == b.normal && a.uv == b.uv;
-  };
+    return std::hash<Vector3>()(v.position);
+  }
 };

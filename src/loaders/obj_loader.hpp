@@ -38,6 +38,7 @@ class ObjLoader {
   std::vector<Vector3> vertex_normals;
   std::vector<Vector2> vertex_uvs;
   std::vector<Face> faces;
+  std::unordered_map<Vertex, uint32_t> index_map;
 
  public:
   // TODO implement texture loading
@@ -85,19 +86,19 @@ class ObjLoader {
 
     // load vertices and indices
 
-    for (const auto& face : faces) {
-      Vertex v(vertex_positions[face.position_index],
-               vertex_normals[face.normal_index], vertex_uvs[face.uv_index]);
+    // for (const auto& face : faces) {
+    //   Vertex v(vertex_positions[face.position_index],
+    //            vertex_normals[face.normal_index], vertex_uvs[face.uv_index]);
 
-      // vertices.push_back(v);
-      // indices.push_back(face.position_index);
-      insert_vertex(v);
-    }
+    //   vertices.push_back(v);
+    //   indices.push_back(face.position_index);
+    //   insert_vertex(v);
+    // }
 
     // clear all redundant data
     faces.clear();
     vertex_normals.clear();
-    // vertex_positions.clear();
+    vertex_positions.clear();
     vertex_uvs.clear();
   }
 
@@ -147,9 +148,6 @@ class ObjLoader {
   }
 
   void insert_vertex(const Vertex& v) {
-    static std::unordered_map<Vertex, uint32_t, VertexHash, VertexEqual>
-        index_map;
-
     if (index_map.count(v) > 0) {
       // duplicate vertex
       indices.push_back(index_map.at(v));
@@ -165,33 +163,30 @@ class ObjLoader {
   void load_face(const std::string& face) {
     using std::string;
 
-    int vertex_index = 0;
-    int normal_index = 0;
-    int uv_index = 0;
+    uint vertex_indices[3];
+    uint normal_indices[3];
+    uint uv_indices[3];
 
-    int first_space = 0;
-    int second_space = 0;
+    int matches =
+        sscanf(face.c_str(), "f %d/%d/%d %d/%d/%d %d/%d/%d\n",
+               &vertex_indices[0], &normal_indices[0], &uv_indices[0],
+               &vertex_indices[1], &normal_indices[1], &uv_indices[1],
+               &vertex_indices[2], &normal_indices[2], &uv_indices[2]);
+
+    if (matches != 9) {
+#ifndef NDEBUG
+      std::cout << "Couldn't read face. Aborting.\n";
+#endif
+      return;
+    }
 
     for (int i = 0; i < 3; i++) {
-      first_space = face.find(" ", first_space + 1);
-      second_space = face.find_first_of(" \n", first_space + 1);
+      Vector3 vertex_position = vertex_positions[vertex_indices[i] - 1];
+      Vector3 vertex_normal = vertex_normals[normal_indices[i] - 1];
+      Vector2 vertex_uv = vertex_uvs[uv_indices[i] - 1];
 
-      int first_separator = face.find("/", first_space);
-      int second_separator = face.rfind("/", second_space);
-
-      string vertex_index_string =
-          face.substr(first_space + 1, first_separator - first_space - 1);
-      string normal_index_string = face.substr(
-          first_separator + 1, second_separator - first_separator - 1);
-      string uvcoord_index_string = face.substr(
-          second_separator + 1, second_space - second_separator - 1);
-
-      uint32_t vertex_index = std::stoi(vertex_index_string);
-      uint32_t normal_index = std::stoi(normal_index_string);
-      uint32_t uv_index = std::stoi(uvcoord_index_string);
-
-      // indices.emplace_back(vertex_index);
-      faces.emplace_back(vertex_index, normal_index, uv_index);
+      Vertex v(vertex_position, vertex_normal, vertex_uv);
+      insert_vertex(v);
     }
   }
 

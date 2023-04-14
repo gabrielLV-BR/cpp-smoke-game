@@ -44,7 +44,8 @@ struct Mesh {
     glDeleteVertexArrays(1, &vao);
   }
 
-  uint32_t num_indices() const { return index_buffer.data.size(); }
+  uint32_t index_count() const { return index_buffer.data.size(); }
+  uint32_t vertex_count() const { return vertex_buffer.data.size(); }
 
   void bind() { glBindVertexArray(vao); }
 

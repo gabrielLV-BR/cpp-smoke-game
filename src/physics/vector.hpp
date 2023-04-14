@@ -12,14 +12,9 @@ struct Vector3 {
     return this->x == other.x && this->y == other.y && this->z == other.z;
   }
 
-  std::string to_string() const {
+  inline std::string to_string() const {
     return "Vector3(" + std::to_string(x) + ", " + std::to_string(y) + ", " +
            std::to_string(z) + ")\n";
-  }
-
-  std::size_t hash() const {
-    using std::hash;
-    return hash<float>()(x) ^ hash<float>()(y) ^ hash<float>()(z);
   }
 };
 
@@ -32,9 +27,18 @@ struct Vector2 {
   bool operator==(const Vector2& other) const {
     return this->x == other.x && this->y == other.y;
   }
+};
 
-  std::size_t hash() const {
-    using std::hash;
-    return hash<float>()(x) ^ hash<float>()(y);
+template <>
+struct std::hash<Vector3> {
+  size_t operator()(const Vector3& v) {
+    return hash<float>()(v.x) ^ hash<float>()(v.y) ^ hash<float>()(v.z);
+  }
+};
+
+template <>
+struct std::hash<Vector2> {
+  size_t operator()(const Vector2& v) {
+    return hash<float>()(v.x) ^ hash<float>()(v.y);
   }
 };
