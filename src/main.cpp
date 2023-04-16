@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "renderer/mesh.hpp"
+#include "renderer/model.hpp"
 #include "renderer/program.hpp"
 #include "renderer/shader.hpp"
 #include "renderer/texture.hpp"
@@ -24,6 +25,11 @@
 #include "glm/mat4x4.hpp"
 #include "glm/vec3.hpp"
 #include "glm/vec4.hpp"
+
+// Remove false-positive errors
+#ifndef ASSETS
+#define ASSETS ""
+#endif
 
 int main() {
   const int WIDTH = 500;
