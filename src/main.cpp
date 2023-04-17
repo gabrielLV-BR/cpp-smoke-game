@@ -13,7 +13,7 @@
 
 #include "loaders/obj_loader.hpp"
 #include "physics/vector.hpp"
-
+#include "servers/material_server.hpp"
 #include "utils/file.hpp"
 
 #include "GLFW/glfw3.h"

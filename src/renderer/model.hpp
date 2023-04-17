@@ -4,11 +4,12 @@
 #include <memory>
 #include <vector>
 
+#include "renderer/material.hpp"
 #include "renderer/mesh.hpp"
 
 #include "glad/glad.h"
 
 struct Model {
   std::vector<Mesh> meshes;
-  // TODO std::shared_ptr<Material> material;
+  std::shared_ptr<Material> material;
 };

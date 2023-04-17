@@ -29,6 +29,8 @@ struct Texture {
     unbind();
   }
 
+  ~Texture() { glDeleteTextures(1, &handle); }
+
   static Texture from_file(const std::string& path) {
     int width, height, channel_count;
     unsigned char* data =
@@ -41,10 +43,10 @@ struct Texture {
     return t;
   }
 
-  void bind() const {
+  inline void bind() const {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, handle);
   }
 
-  void unbind() const { glBindTexture(GL_TEXTURE_2D, 0); }
+  inline void unbind() const { glBindTexture(GL_TEXTURE_2D, 0); }
 };
