@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "renderer/texture.hpp"
+
 class Material {
  public:
   virtual void prepare() = 0;
@@ -12,9 +14,12 @@ class Material {
 
 class TexturedMaterial : public Material {
  public:
-  TexturedMaterial() {}
+  Texture diffuse;
+
+  TexturedMaterial(Texture diffuse) : diffuse(diffuse) {}
 
   void prepare() override {}
+
   virtual uint32_t id() const override { return 0; }
 };
 

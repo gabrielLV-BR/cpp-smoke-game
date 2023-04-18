@@ -6,7 +6,7 @@
 #include "./obj_loader.hpp"
 ObjLoader::ObjLoader(ObjLoaderConfig config) : config(config) {}
 
-void ObjLoader::load(const std::string name) {
+Model ObjLoader::load(const std::string name) {
   std::string model_path = config.folder + name;
   std::string line;
   line.reserve(50);
@@ -58,6 +58,8 @@ void ObjLoader::load(const std::string name) {
   vertex_normals.clear();
   vertex_positions.clear();
   vertex_uvs.clear();
+
+  return {};
 }
 
 Vector3 ObjLoader::parse_vector3(const std::string& line, int start, int end) {
@@ -156,11 +158,6 @@ void ObjLoader::load_material(const std::string& material_name) {
     if (line[0] == 'm' && line.rfind("map_Kd", 0) == 0) {
       // found line that specifies diffuse texture
       texture_name = line.substr(line.find(" "));
-      load_texture(texture_name);
     }
   }
-}
-
-void ObjLoader::load_texture(const std::string& texture_name) {
-  // TODO handle it
 }

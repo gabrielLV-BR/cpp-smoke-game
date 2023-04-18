@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "physics/vector.hpp"
+#include "renderer/model.hpp"
 #include "renderer/vertex.hpp"
 
 struct ObjLoaderConfig {
@@ -45,7 +46,7 @@ class ObjLoader {
  public:
   ObjLoader(ObjLoaderConfig config);
 
-  void load(const std::string name);
+  Model load(const std::string name);
   Vector3 parse_vector3(const std::string& line, int start, int end);
   Vector2 parse_vector2(const std::string& line, int start, int end);
 
@@ -54,5 +55,4 @@ class ObjLoader {
   void load_vertex(const std::string& line);
   void load_face(const std::string& face);
   void load_material(const std::string& material_name);
-  void load_texture(const std::string& texture_name);
 };
