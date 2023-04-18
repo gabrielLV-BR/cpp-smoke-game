@@ -8,10 +8,21 @@ ObjLoader::ObjLoader(ObjLoaderConfig config) : config(config) {}
 
 Model ObjLoader::load(const std::string name) {
   std::string model_path = config.folder + name;
+
+  read_file(model_path);
+  // clear all redundant data
+  vertex_normals.clear();
+  vertex_positions.clear();
+  vertex_uvs.clear();
+
+  return {};
+}
+
+void ObjLoader::read_file(const std::string& file_path) {
   std::string line;
   line.reserve(50);
 
-  FILE* file = fopen(model_path.c_str(), "r");
+  FILE* file = fopen(file_path.c_str(), "r");
 
   char c_line[50];
   while (fgets(c_line, 50, file)) {
@@ -26,8 +37,9 @@ Model ObjLoader::load(const std::string name) {
         // make sure it says mtllib
         if (line.rfind("mttlib", 0) == 0) {
           // get material name
-          const std::string material_name = line.substr(line.find(" "));
-          load_material(material_name);
+          const std::string material_name =
+              config.folder + line.substr(line.find(" "));
+          read_material(material_name);
         }
         break;
       };
@@ -41,25 +53,19 @@ Model ObjLoader::load(const std::string name) {
   }
 
   fclose(file);
+}
 
-  // load vertices and indices
+void ObjLoader::read_material(const std::string& material_path) {
+  std::string line, texture_name;
 
-  // for (const auto& face : faces) {
-  //   Vertex v(vertex_positions[face.position_index],
-  //            vertex_normals[face.normal_index], vertex_uvs[face.uv_index]);
+  std::ifstream file(material_path);
 
-  //   vertices.push_back(v);
-  //   indices.push_back(face.position_index);
-  //   insert_vertex(v);
-  // }
-
-  // clear all redundant data
-  faces.clear();
-  vertex_normals.clear();
-  vertex_positions.clear();
-  vertex_uvs.clear();
-
-  return {};
+  while (std::getline(file, line)) {
+    if (line[0] == 'm' && line.rfind("map_Kd", 0) == 0) {
+      // found line that specifies diffuse texture
+      texture_name = line.substr(line.find(" "));
+    }
+  }
 }
 
 Vector3 ObjLoader::parse_vector3(const std::string& line, int start, int end) {
@@ -145,19 +151,5 @@ void ObjLoader::load_face(const std::string& face) {
 
     Vertex v(vertex_position, vertex_normal, vertex_uv);
     insert_vertex(v);
-  }
-}
-
-void ObjLoader::load_material(const std::string& material_name) {
-  std::string material_path = config.folder + material_name;
-  std::string line, texture_name;
-
-  std::ifstream file(material_path);
-
-  while (std::getline(file, line)) {
-    if (line[0] == 'm' && line.rfind("map_Kd", 0) == 0) {
-      // found line that specifies diffuse texture
-      texture_name = line.substr(line.find(" "));
-    }
   }
 }

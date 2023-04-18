@@ -24,21 +24,15 @@ class ObjLoader {
  public:
   std::vector<Vertex> vertices;
   std::vector<uint32_t> indices;
-  std::vector<Vector3> vertex_positions;
 
  private:
-  struct Face {
-    uint32_t position_index, normal_index, uv_index;
-
-    Face(uint32_t pos, uint32_t nor, uint32_t uv)
-        : position_index(pos), normal_index(nor), uv_index(uv) {}
-  };
-
   ObjLoaderConfig config;
 
+  std::string object_name;
+  std::vector<Vector3> vertex_positions;
   std::vector<Vector3> vertex_normals;
   std::vector<Vector2> vertex_uvs;
-  std::vector<Face> faces;
+  std::vector<Material*> materials;
 
   std::unordered_map<Vertex, uint32_t> index_map;
 
@@ -51,8 +45,10 @@ class ObjLoader {
   Vector2 parse_vector2(const std::string& line, int start, int end);
 
  private:
+  void read_file(const std::string& file_path);
+  void read_material(const std::string& material_path);
+
   void insert_vertex(const Vertex& v);
   void load_vertex(const std::string& line);
   void load_face(const std::string& face);
-  void load_material(const std::string& material_name);
 };
