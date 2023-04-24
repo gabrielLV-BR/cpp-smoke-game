@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 
 #include "glad/glad.h"
 #include "glm/gtc/type_ptr.hpp"
@@ -38,6 +39,8 @@ struct Program {
 
   void unbind() { glUseProgram(0); }
 
+  bool operator==(const Program& other) const { return handle == other.handle; }
+
  private:
   template <typename T>
   void _internal_set_uniform(int location, T value) {
@@ -58,5 +61,12 @@ struct Program {
 
   void _internal_set_uniform(int location, const Texture& t) {
     glUniform1i(location, t.handle);
+  }
+};
+
+template <>
+struct std::hash<Program> {
+  size_t operator()(const Program& p) const {
+    return std::hash<uint32_t>()(p.handle);
   }
 };

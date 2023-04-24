@@ -1,31 +1,37 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 
 #include "renderer/texture.hpp"
 
-class Material {
- public:
-  virtual void prepare() = 0;
-  virtual uint32_t id() const = 0;
-
-  bool operator==(const Material& other) { return id() == other.id(); }
+struct Material {
+  uint32_t program;
+  std::vector<Texture> maps;
 };
 
-class TexturedMaterial : public Material {
- public:
-  Texture diffuse;
+// class Material {
+//  public:
+//   virtual void prepare() = 0;
+//   virtual uint32_t id() const = 0;
 
-  TexturedMaterial(Texture diffuse) : diffuse(diffuse) {}
+//   bool operator==(const Material& other) { return id() == other.id(); }
+// };
 
-  void prepare() override {}
+// class TexturedMaterial : public Material {
+//  public:
+//   Texture diffuse;
 
-  virtual uint32_t id() const override { return 0; }
-};
+//   TexturedMaterial(Texture diffuse) : diffuse(diffuse) {}
 
-template <>
-struct std::hash<Material> {
-  size_t operator()(const Material& other) {
-    return std::hash<uint32_t>()(other.id());
-  }
-};
+//   void prepare() override {}
+
+//   virtual uint32_t id() const override { return 0; }
+// };
+
+// template <>
+// struct std::hash<Material> {
+//   size_t operator()(const Material& other) {
+//     return std::hash<uint32_t>()(other.id());
+//   }
+// };
