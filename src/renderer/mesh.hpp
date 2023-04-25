@@ -5,10 +5,12 @@
 
 #include "glad/glad.h"
 #include "renderer/buffer.hpp"
+#include "renderer/material.hpp"
 #include "renderer/vertex.hpp"
 
 struct Mesh {
   uint32_t vao;
+  Material material;
   std::string name;
   Buffer<Vertex> vertex_buffer;
   Buffer<uint32_t> index_buffer;

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "renderer/material.hpp"
 #include "renderer/mesh.hpp"
 #include "renderer/model.hpp"
 #include "renderer/program.hpp"
@@ -14,6 +15,8 @@
 #include "loaders/obj_loader.hpp"
 #include "physics/vector.hpp"
 #include "servers/material_server.hpp"
+#include "servers/program_server.hpp"
+#include "utils/color.hpp"
 #include "utils/file.hpp"
 
 #include "GLFW/glfw3.h"
