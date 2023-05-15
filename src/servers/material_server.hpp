@@ -20,7 +20,7 @@ class MaterialServer {
   Material& get_material(uint32_t index);
   uint32_t get_index(const Material& mat);
 
-  static MaterialServer* MaterialServer::get_global_instance() {
+  static MaterialServer* get_global_instance() {
     if (_instance == nullptr) {
       *_instance = MaterialServer();
     }

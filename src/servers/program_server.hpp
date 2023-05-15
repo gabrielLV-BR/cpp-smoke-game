@@ -20,7 +20,7 @@ class ProgramServer {
   void store_program(bitset bits, uint32_t program_handle);
   uint32_t get_program(bitset bits) const;
 
-  static ProgramServer* ProgramServer::get_global_instance() {
+  static ProgramServer* get_global_instance() {
     if (_instance == nullptr) {
       *_instance = ProgramServer();
     }
