@@ -64,6 +64,8 @@ void ObjLoader::read_material(const std::string& material_path) {
     if (line[0] == 'm' && line.rfind("map_Kd", 0) == 0) {
       // found line that specifies diffuse texture
       texture_name = line.substr(line.find(" "));
+
+      Texture texture = Texture::from_file(texture_name);
     }
   }
 }

@@ -9,7 +9,7 @@ class ProgramServer {
  public:
   using bitset = uint8_t;
 
- private:
+  private:
   std::unordered_map<bitset, uint32_t> program_map;
   static ProgramServer* _instance;
 

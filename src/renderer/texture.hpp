@@ -11,6 +11,10 @@
 struct Texture {
   uint32_t handle;
 
+  enum TextureType { DIFFUSE = 1 << 0, NORMAL = 1 << 1 };
+
+  TextureType texture_type;
+
   Texture(const void* data, int width, int height, int channel_count) {
     glGenTextures(1, &handle);
 
@@ -27,6 +31,8 @@ struct Texture {
     glGenerateMipmap(GL_TEXTURE_2D);
 
     unbind();
+
+    texture_type = TextureType::DIFFUSE;
   }
 
   ~Texture() { glDeleteTextures(1, &handle); }

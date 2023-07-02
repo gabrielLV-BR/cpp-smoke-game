@@ -9,9 +9,9 @@ add_executable(
 
     src/main.cpp    
     src/renderer/mesh.cpp
+    src/renderer/material.cpp
     src/loaders/obj_loader.cpp
     src/servers/program_server.cpp
-    src/servers/material_server.cpp
     src/utils/file.cpp
 
     modules/glad/glad.c

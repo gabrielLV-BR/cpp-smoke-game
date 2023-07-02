@@ -10,3 +10,6 @@
 [submodule "modules/stb"]
 	path = modules/stb
 	url = https://github.com/nothings/stb.git
+[submodule "modules/assimp"]
+	path = modules/assimp
+	url = https://github.com/assimp/assimp.git
