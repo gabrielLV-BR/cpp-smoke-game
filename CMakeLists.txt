@@ -8,6 +8,7 @@ add_executable(
     ${PROJECT_NAME}
 
     src/main.cpp    
+    src/renderer/shader.cpp
     src/renderer/mesh.cpp
     src/renderer/material.cpp
     src/loaders/obj_loader.cpp

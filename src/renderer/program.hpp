@@ -2,16 +2,20 @@
 
 #include <string>
 #include <unordered_map>
+#include <bitset>
 
 #include "glad/glad.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/mat4x4.hpp"
 
+#include "./material.hpp"
 #include "./shader.hpp"
 #include "./texture.hpp"
 
 struct Program {
   uint32_t handle;
+  using bitset = Material::bitset;
+  bitset features_bitset;
 
   Program(Shader vertex, Shader fragment) : handle(glCreateProgram()) {
     glAttachShader(handle, vertex.handle);

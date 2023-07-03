@@ -14,7 +14,6 @@
 
 #include "loaders/obj_loader.hpp"
 #include "physics/vector.hpp"
-#include "servers/material_server.hpp"
 #include "servers/program_server.hpp"
 #include "utils/color.hpp"
 #include "utils/file.hpp"
@@ -33,6 +32,19 @@
 #ifndef ASSETS
 #define ASSETS ""
 #endif
+
+void store_default_programs(ProgramServer& program_server) {
+  // TODO load all default programs and bitsets into ProgramServer
+  {  // BASIC
+    Shader basic_frag_shader = Shader::load_from_file(
+        ASSETS "shaders/basic.frag.glsl", ShaderType::FRAGMENT);
+    Shader basic_vert_shader = Shader::load_from_file(
+        ASSETS "shaders/basic.frag.glsl", ShaderType::FRAGMENT);
+
+    Program basic_program = Program(basic_frag_shader, basic_vert_shader);
+    program_server.store_program(basic_program);
+  }
+}
 
 int main() {
   const int WIDTH = 500;

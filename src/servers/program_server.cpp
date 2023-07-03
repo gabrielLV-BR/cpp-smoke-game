@@ -4,14 +4,20 @@ ProgramServer::ProgramServer() {}
 
 ProgramServer::~ProgramServer() {}
 
-void ProgramServer::store_program(ProgramServer::bitset bits,
-                                  uint32_t program_handle) {
-  if (program_map.count(bits) > 0)
-    return;
+void ProgramServer::store_program(Program program) {
+  bool exists = false;
 
-  program_map[bits] = program_handle;
+  for (const auto& p : programs)
+    exists |= p == program;
+
+  if (!exists)
+    programs.push_back(program);
 }
 
-uint32_t ProgramServer::get_program(ProgramServer::bitset bits) const {
-  return program_map.at(bits);
+Program ProgramServer::find_program_with_bitset(
+    ProgramServer::bitset bits) const {
+  for (const auto& p : programs) {
+    if ((p.features_bitset & bits) != 0)
+      return p;
+  }
 }

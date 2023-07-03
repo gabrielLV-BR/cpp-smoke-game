@@ -14,27 +14,10 @@ struct Shader {
 
   int success;
 
-  Shader(std::string source, ShaderType shader_type)
-      : shader_type(shader_type) {
-    handle = glCreateShader(static_cast<uint32_t>(shader_type));
+  Shader(std::string source, ShaderType shader_type);
+  ~Shader();
 
-    glShaderSource(handle, 1, reinterpret_cast<const char**>(&source), NULL);
-    glCompileShader(handle);
+  static Shader load_from_file(std::string path, ShaderType shader_type);
 
-    check_for_errors();
-  }
-
-  ~Shader() { glDeleteShader(handle); }
-
-  void check_for_errors() {
-    glGetShaderiv(handle, GL_COMPILE_STATUS, &success);
-
-    if (!success) {
-      char info_log[512];
-      glGetShaderInfoLog(handle, 512, nullptr, info_log);
-      std::cout << "[ERROR COMPILING "
-                << (shader_type == ShaderType::FRAGMENT ? "FRAGMENT" : "VERTEX")
-                << " SHADER!]\t" << info_log << '\n';
-    }
-  }
+  void check_for_errors();
 };

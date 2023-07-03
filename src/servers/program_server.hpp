@@ -1,29 +1,35 @@
 #pragma once
 
 #include <cstdint>
-#include <unordered_map>
+#include <vector>
 
 #include "renderer/program.hpp"
 
 class ProgramServer {
- public:
-  using bitset = uint8_t;
+  using bitset = Program::bitset;
 
-  private:
-  std::unordered_map<bitset, uint32_t> program_map;
-  static ProgramServer* _instance;
+ private:
+  // TODO remove this if the vector proves to be inneficient
+  //  std::unordered_map<bitset, uint32_t> program_map;
+  std::vector<Program> programs;
 
  public:
   ProgramServer();
   ~ProgramServer();
 
-  void store_program(bitset bits, uint32_t program_handle);
-  uint32_t get_program(bitset bits) const;
+  void store_program(Program program);
+  Program find_program_with_bitset(bitset bits) const;
 
+  // Singleton stuff
+
+ public:
   static ProgramServer* get_global_instance() {
     if (_instance == nullptr) {
       *_instance = ProgramServer();
     }
     return _instance;
   }
+
+ private:
+  static ProgramServer* _instance;
 };
