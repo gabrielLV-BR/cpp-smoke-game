@@ -1,13 +1,16 @@
 #include "./material.hpp"
 
-Material::Material(uint32_t program) : Material(program, {}, {}) {}
+#include "servers/program_server.hpp"
 
-Material::Material(uint32_t program, std::vector<Texture> maps)
-    : Material(program, maps, {}) {}
+BaseMaterial::BaseMaterial()
+    : BaseMaterial(ProgramServer::find_program_with_bitset(0).handle) {}
 
-Material::Material(uint32_t program, std::vector<Texture> maps, Color color)
-    : program(program), maps(maps), color(color) {}
+BaseMaterial::BaseMaterial(uint32_t program) {}
 
-bool Material::operator==(const Material& other) {
-  return program == other.program;
+void BaseMaterial::bind() {
+  // TODO bind
+}
+
+void BaseMaterial::unbind() {
+  // TODO unbind
 }

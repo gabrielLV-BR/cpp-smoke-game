@@ -10,8 +10,9 @@
 
 struct Mesh {
   uint32_t vao;
-  Material material;
   std::string name;
+
+  Material material;
   Buffer<Vertex> vertex_buffer;
   Buffer<uint32_t> index_buffer;
 

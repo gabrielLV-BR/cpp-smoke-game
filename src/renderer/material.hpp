@@ -7,9 +7,9 @@
 #include "renderer/texture.hpp"
 #include "utils/color.hpp"
 
-enum MaterialMapIndex { DIFFUSE = 0, NORMAL = 1 };
+enum MaterialFeaturesBits { DIFFUSE = 1 << 0, NORMAL = 1 << 1 };
 
-class Material {
+class BaseMaterial {
  public:
   using bitset = std::bitset<8>;
 
@@ -20,13 +20,14 @@ class Material {
  public:
   uint32_t program;
   Color color;
-  std::vector<Texture> maps;
 
-  Material(uint32_t program);
-  Material(uint32_t program, std::vector<Texture> maps);
-  Material(uint32_t program, std::vector<Texture> maps, Color color);
+  BaseMaterial();
 
-  bool operator==(const Material& other);
+  void bind();
+  void unbind();
 
   inline uint32_t id() const { return id; }
+
+ protected:
+  BaseMaterial(uint32_t program);
 };
