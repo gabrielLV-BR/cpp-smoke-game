@@ -1,3 +1,5 @@
 .vscode/
 
 build/
+#TODO Only for now, remove this later
+assets/models/

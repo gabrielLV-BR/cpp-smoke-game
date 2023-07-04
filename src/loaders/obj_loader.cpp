@@ -60,13 +60,29 @@ void ObjLoader::read_material(const std::string& material_path) {
 
   std::ifstream file(material_path);
 
+  std::vector<Texture> maps;
+
   while (std::getline(file, line)) {
     if (line[0] == 'm' && line.rfind("map_Kd", 0) == 0) {
       // found line that specifies diffuse texture
       texture_name = line.substr(line.find(" "));
 
       Texture texture = Texture::from_file(texture_name);
+
+      maps.push_back(texture);
     }
+  }
+
+  switch (maps.size()) {
+    case 0:
+      materials.push_back(new BaseMaterial());
+      break;
+    case 1:
+      // TODO implement rest of materials
+      //  materials.push_back(new BaseMaterial());
+      break;
+    default:
+      break;
   }
 }
 

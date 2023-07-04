@@ -19,6 +19,8 @@ class ProgramServer {
   static void store_program(Program program);
   static Program find_program_with_bitset(bitset bits);
 
+  static void load_default_programs();
+
   // Singleton stuff
 
   static void initialize();

@@ -33,19 +33,6 @@
 #define ASSETS ""
 #endif
 
-void store_default_programs(ProgramServer& program_server) {
-  // TODO load all default programs and bitsets into ProgramServer
-  {  // BASIC
-    Shader basic_frag_shader = Shader::load_from_file(
-        ASSETS "shaders/basic.frag.glsl", ShaderType::FRAGMENT);
-    Shader basic_vert_shader = Shader::load_from_file(
-        ASSETS "shaders/basic.frag.glsl", ShaderType::FRAGMENT);
-
-    Program basic_program = Program(basic_frag_shader, basic_vert_shader);
-    program_server.store_program(basic_program);
-  }
-}
-
 int main() {
   const int WIDTH = 500;
   const int HEIGHT = 500;
@@ -98,6 +85,9 @@ int main() {
   Program program(vertex_shader, fragment_shader);
 
   float elapsed_time = 0;
+
+  ProgramServer::initialize();
+  ProgramServer::load_default_programs();
 
   while (!glfwWindowShouldClose(window)) {
     elapsed_time = static_cast<float>(glfwGetTime());

@@ -28,3 +28,15 @@ Program ProgramServer::find_program_with_bitset(ProgramServer::bitset bits) {
       return p;
   }
 }
+
+void ProgramServer::load_default_programs() {
+  {  // BASIC
+    Shader basic_frag_shader = Shader::load_from_file(
+        ASSETS "shaders/basic.frag.glsl", ShaderType::FRAGMENT);
+    Shader basic_vert_shader = Shader::load_from_file(
+        ASSETS "shaders/basic.frag.glsl", ShaderType::FRAGMENT);
+
+    Program basic_program = Program(basic_frag_shader, basic_vert_shader);
+    store_program(basic_program);
+  }
+}
