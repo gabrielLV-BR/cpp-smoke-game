@@ -7,6 +7,8 @@
 #include "renderer/texture.hpp"
 #include "utils/color.hpp"
 
+enum MaterialMapIndex { DIFFUSE = 0, NORMAL = 1 };
+
 class Material {
  public:
   using bitset = std::bitset<8>;
@@ -27,6 +29,4 @@ class Material {
   bool operator==(const Material& other);
 
   inline uint32_t id() const { return id; }
-
-  bitset get_features_bitset() const;
 };
