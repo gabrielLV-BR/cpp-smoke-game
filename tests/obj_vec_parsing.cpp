@@ -4,7 +4,7 @@
 #include <string>
 
 #include "loaders/obj_loader.hpp"
-#include "physics/vector.hpp"
+#include "math/vector.hpp"
 #include "renderer/vertex.hpp"
 
 TEST(VecParsing, Simple1) {

@@ -12,7 +12,7 @@ struct Mesh {
   uint32_t vao;
   std::string name;
 
-  Material material;
+  StandardMaterial material;
   Buffer<Vertex> vertex_buffer;
   Buffer<uint32_t> index_buffer;
 

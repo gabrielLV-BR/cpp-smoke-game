@@ -13,7 +13,7 @@
 #include "renderer/vertex.hpp"
 
 #include "loaders/obj_loader.hpp"
-#include "physics/vector.hpp"
+#include "math/vector.hpp"
 #include "servers/program_server.hpp"
 #include "utils/color.hpp"
 #include "utils/file.hpp"
@@ -61,11 +61,14 @@ int main() {
   glEnable(GL_CULL_FACE);
   glCullFace(GL_FRONT);
 
+  ProgramServer::initialize();
+  ProgramServer::load_default_programs();
+
   glm::mat4 model_matrix = glm::mat4(1.0f);
   model_matrix = glm::rotate(model_matrix, glm::radians(45.0f),
                              glm::vec3(-1.0f, 0.0f, 0.0f));
 
-  ObjLoaderConfig config(ASSETS "models/suzanne/");
+  ObjLoaderConfig config(ASSETS "models/");
   ObjLoader loader(config);
 
   loader.load("suzanne.obj");
@@ -85,10 +88,6 @@ int main() {
   Program program(vertex_shader, fragment_shader);
 
   float elapsed_time = 0;
-
-  ProgramServer::initialize();
-  ProgramServer::load_default_programs();
-
   while (!glfwWindowShouldClose(window)) {
     elapsed_time = static_cast<float>(glfwGetTime());
 

@@ -2,6 +2,9 @@
 
 #include "glad/glad.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb/stb_image.h"
+
 Texture::Texture(const void* data, int width, int height, int channel_count) {
   glGenTextures(1, &handle);
 
@@ -36,11 +39,11 @@ Texture Texture::from_file(const std::string& path) {
   return t;
 }
 
-void Texture::bind() const {
+inline void Texture::bind() const {
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, handle);
 }
 
-void Texture::unbind() const {
+inline void Texture::unbind() const {
   glBindTexture(GL_TEXTURE_2D, 0);
 }

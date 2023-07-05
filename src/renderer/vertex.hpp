@@ -3,7 +3,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "physics/vector.hpp"
+#include "math/vector.hpp"
 
 struct Vertex {
   Vector3 position;

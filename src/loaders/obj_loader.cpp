@@ -63,8 +63,8 @@ void ObjLoader::read_material(const std::string& material_path) {
   std::vector<Texture> maps;
 
   while (std::getline(file, line)) {
-    if (line[0] == 'm' && line.rfind("map_Kd", 0) == 0) {
-      // found line that specifies diffuse texture
+    if (line[0] == 'm' && line.rfind("map_", 0) == 0) {
+      // found line that specifies texture
       texture_name = line.substr(line.find(" "));
 
       Texture texture = Texture::from_file(texture_name);
@@ -73,17 +73,7 @@ void ObjLoader::read_material(const std::string& material_path) {
     }
   }
 
-  switch (maps.size()) {
-    case 0:
-      materials.push_back(new BaseMaterial());
-      break;
-    case 1:
-      // TODO implement rest of materials
-      //  materials.push_back(new BaseMaterial());
-      break;
-    default:
-      break;
-  }
+  materials.push_back(StandardMaterial(Color{1.0, 1.0, 1.0}, maps));
 }
 
 Vector3 ObjLoader::parse_vector3(const std::string& line, int start, int end) {

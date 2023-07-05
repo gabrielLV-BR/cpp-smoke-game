@@ -1,16 +1,12 @@
 #include "./material.hpp"
 
-#include "servers/program_server.hpp"
+StandardMaterial::StandardMaterial(Color color, std::vector<Texture> maps)
+    : color(color), maps(maps) {}
 
-BaseMaterial::BaseMaterial()
-    : BaseMaterial(ProgramServer::find_program_with_bitset(0).handle) {}
-
-BaseMaterial::BaseMaterial(uint32_t program) {}
-
-void BaseMaterial::bind() {
+void StandardMaterial::bind() {
   // TODO bind
 }
 
-void BaseMaterial::unbind() {
+void StandardMaterial::unbind() {
   // TODO unbind
 }

@@ -9,9 +9,10 @@ add_executable(
 
     src/main.cpp    
     src/math/camera.cpp
+    src/math/vector.cpp
+    src/renderer/texture.cpp
     src/renderer/shader.cpp
     src/renderer/mesh.cpp
-    src/renderer/texture.cpp
     src/renderer/material.cpp
     src/loaders/obj_loader.cpp
     src/servers/program_server.cpp
