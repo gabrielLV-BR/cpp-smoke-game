@@ -12,14 +12,36 @@ class ProgramServer {
   static std::vector<Program> programs;
   static ProgramServer* _instance;
 
+  ProgramServer() {}
+
  public:
-  ProgramServer();
+  static void initialize() {
+    if (_instance == nullptr) {
+      _instance = new ProgramServer();
+    }
+  }
 
-  static void store_program(Program program);
-  static void load_default_programs();
+  static void destroy() { free(_instance); }
 
-  // Singleton stuff
+  static void store_program(Program program) {
+    bool exists = false;
 
-  static void initialize();
-  static void destroy();
+    for (const auto& p : programs)
+      exists |= p == program;
+
+    if (!exists)
+      programs.push_back(program);
+  }
+
+  static void load_default_programs() {
+    {  // BASIC
+      Shader basic_frag_shader = Shader::load_from_file(
+          ASSETS "shaders/basic.frag.glsl", ShaderType::FRAGMENT);
+      Shader basic_vert_shader = Shader::load_from_file(
+          ASSETS "shaders/basic.frag.glsl", ShaderType::FRAGMENT);
+
+      Program basic_program = Program(basic_frag_shader, basic_vert_shader);
+      store_program(basic_program);
+    }
+  }
 };
