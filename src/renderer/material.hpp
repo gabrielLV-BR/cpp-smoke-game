@@ -21,6 +21,7 @@ class StandardMaterial {
   // TODO allow for more maps
   std::vector<Texture> maps;
 
+  StandardMaterial();
   StandardMaterial(Color color, std::vector<Texture> maps);
 
   void bind();

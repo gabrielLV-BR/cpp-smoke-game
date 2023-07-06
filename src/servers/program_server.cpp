@@ -3,13 +3,13 @@
 ProgramServer::ProgramServer() {}
 
 void ProgramServer::initialize() {
-  if (_instance == nullptr) {
-    _instance = new ProgramServer();
+  if (ProgramServer::_instance == nullptr) {
+    ProgramServer::_instance = new ProgramServer();
   }
 }
 
 void ProgramServer::destroy() {
-  free(_instance);
+  free(ProgramServer::_instance);
 }
 
 void ProgramServer::store_program(Program program) {
@@ -20,13 +20,6 @@ void ProgramServer::store_program(Program program) {
 
   if (!exists)
     programs.push_back(program);
-}
-
-Program ProgramServer::find_program_with_bitset(ProgramServer::bitset bits) {
-  for (const auto& p : programs) {
-    if ((p.features_bitset & bits) != 0)
-      return p;
-  }
 }
 
 void ProgramServer::load_default_programs() {

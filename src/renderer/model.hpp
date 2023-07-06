@@ -11,5 +11,5 @@
 
 struct Model {
   std::vector<Mesh> meshes;
-  std::shared_ptr<Material> material;
+  std::shared_ptr<StandardMaterial> material;
 };
