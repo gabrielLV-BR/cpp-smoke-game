@@ -1,43 +1,28 @@
 #pragma once
 
-#include <string>
-#include <unordered_map>
-
-#include "glad/glad.h"
-#include "glm/gtc/type_ptr.hpp"
-#include "glm/mat4x4.hpp"
-
 #include "./shader.hpp"
 #include "./texture.hpp"
+#include "glm/mat4x4.hpp"
 
 struct Program {
   uint32_t handle;
 
-  Program(Shader vertex, Shader fragment) : handle(glCreateProgram()) {
-    glAttachShader(handle, vertex.handle);
-    glAttachShader(handle, fragment.handle);
-    glLinkProgram(handle);
-  }
+  Program(Shader vertex, Shader fragment);
+  ~Program();
 
-  ~Program() { glDeleteProgram(handle); }
-
-  int get_uniform_location(const std::string& name) const {
-    return glGetUniformLocation(handle, name.c_str());
-  }
+  int get_uniform_location(const std::string& name) const;
 
   template <typename T>
   void set_uniform(std::string name, T value) {
     int location = get_uniform_location(name);
 
-    if (location == -1)
-      return;
+    if (location == -1) return;
 
     _internal_set_uniform(location, value);
   }
 
-  void bind() { glUseProgram(handle); }
-
-  void unbind() { glUseProgram(0); }
+  void bind();
+  void unbind();
 
   bool operator==(const Program& other) const { return handle == other.handle; }
 
@@ -47,21 +32,10 @@ struct Program {
     std::cout << "type not implemented\n";
   }
 
-  void _internal_set_uniform(int location, int value) {
-    glUniform1i(location, value);
-  }
-
-  void _internal_set_uniform(int location, float value) {
-    glUniform1f(location, value);
-  }
-
-  void _internal_set_uniform(int location, const glm::mat4& mat) {
-    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
-  }
-
-  void _internal_set_uniform(int location, const Texture& t) {
-    glUniform1i(location, t.handle);
-  }
+  void _internal_set_uniform(int location, int value);
+  void _internal_set_uniform(int location, float value);
+  void _internal_set_uniform(int location, const glm::mat4& mat);
+  void _internal_set_uniform(int location, const Texture& t);
 };
 
 template <>

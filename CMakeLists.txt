@@ -7,7 +7,10 @@ set("MODULES_DIR" "${CMAKE_SOURCE_DIR}/modules/")
 add_executable(
     ${PROJECT_NAME}
 
+    src/renderer/program.cpp
+    src/renderer/buffer.cpp
     src/main.cpp    
+    src/renderer/texture.cpp
     src/renderer/mesh.cpp
     src/loaders/obj_loader.cpp
     src/servers/program_server.cpp

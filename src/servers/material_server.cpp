@@ -5,8 +5,7 @@ MaterialServer::MaterialServer() {}
 MaterialServer::~MaterialServer() {}
 
 uint32_t MaterialServer::store_material(const Material& material) {
-  if (material_index.count(material) > 0)
-    return;
+  if (material_index.count(material) > 0) return 0;
 
   uint32_t index = materials.size() - 1;
 

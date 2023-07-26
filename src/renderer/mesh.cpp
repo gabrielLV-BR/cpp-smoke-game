@@ -1,7 +1,8 @@
 #include "./mesh.hpp"
 
-Mesh::Mesh(std::string name,
-           std::vector<Vertex> vertices,
+#include "glad/glad.h"
+
+Mesh::Mesh(std::string name, std::vector<Vertex> vertices,
            std::vector<uint32_t> indices)
     : name(name),
       vertex_buffer(GL_ARRAY_BUFFER, vertices),
@@ -39,17 +40,9 @@ Mesh::~Mesh() {
   glDeleteVertexArrays(1, &vao);
 }
 
-uint32_t Mesh::index_count() const {
-  return index_buffer.data.size();
-}
-uint32_t Mesh::vertex_count() const {
-  return vertex_buffer.data.size();
-}
+uint32_t Mesh::index_count() const { return index_buffer.data.size(); }
+uint32_t Mesh::vertex_count() const { return vertex_buffer.data.size(); }
 
-void Mesh::bind() {
-  glBindVertexArray(vao);
-}
+void Mesh::bind() { glBindVertexArray(vao); }
 
-void Mesh::unbind() {
-  glBindVertexArray(0);
-}
+void Mesh::unbind() { glBindVertexArray(0); }
