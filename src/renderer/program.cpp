@@ -3,7 +3,10 @@
 #include <string>
 #include <unordered_map>
 
+#include "glm/mat4x4.hpp"
 #include "glm/gtc/type_ptr.hpp"
+
+#include "glad/glad.h"
 
 Program::Program(Shader vertex, Shader fragment) : handle(glCreateProgram()) {
   glAttachShader(handle, vertex.handle);
@@ -11,11 +14,17 @@ Program::Program(Shader vertex, Shader fragment) : handle(glCreateProgram()) {
   glLinkProgram(handle);
 }
 
-Program::~Program() { glDeleteProgram(handle); }
+Program::~Program() {
+  glDeleteProgram(handle);
+}
 
-void Program::bind() { glUseProgram(handle); }
+void Program::bind() {
+  glUseProgram(handle);
+}
 
-void Program::unbind() { glUseProgram(0); }
+void Program::unbind() {
+  glUseProgram(0);
+}
 
 int Program::get_uniform_location(const std::string& name) const {
   return glGetUniformLocation(handle, name.c_str());

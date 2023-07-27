@@ -8,6 +8,7 @@
 #include "math/vector.hpp"
 #include "renderer/model.hpp"
 #include "renderer/vertex.hpp"
+#include "renderer/material.hpp"
 
 struct ObjLoaderConfig {
   std::string folder;
@@ -32,7 +33,7 @@ class ObjLoader {
   std::vector<Vector3> vertex_positions;
   std::vector<Vector3> vertex_normals;
   std::vector<Vector2> vertex_uvs;
-  std::vector<StandardMaterial> materials;
+  std::vector<BasicMaterial> materials;
 
   std::unordered_map<Vertex, uint32_t> index_map;
 

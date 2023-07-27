@@ -1,14 +1,34 @@
-#include "./material.hpp"
+#include "material.hpp"
 
-StandardMaterial::StandardMaterial() : color{1, 1, 1}, maps{} {}
+#include "glad/glad.h"
 
-StandardMaterial::StandardMaterial(Color color, std::vector<Texture> maps)
-    : color(color), maps(maps) {}
+#include "utils/color.hpp"
+#include "servers/program_server.hpp"
 
-void StandardMaterial::bind() {
-  // TODO bind
+Material::Material() : Material(Color(0.0, 0.0, 0.0), {}) {}
+
+Material::Material(Color color) : Material(color, {}) {}
+
+Material::Material(Color color, std::vector<Texture> maps)
+    : color(color),
+      maps(maps),
+      _program(ProgramServer::get_program_for(this)) {}
+
+Program::bitset Material::get_bits() const {
+  Program::bitset bits;
+
+  // TODO allow adjustable behaviour, like graphics options
+  for (int i = 0; i < maps.size(); i++)
+    bits |= 1 << i;
+
+  return bits;
 }
 
-void StandardMaterial::unbind() {
-  // TODO unbind
+void Material::bind() const {
+  _program->bind();
+  _program->set_uniform<Color>(ProgramUniforms::COLOR, color);
+}
+
+void Material::unbind() const {
+  _program->unbind();
 }

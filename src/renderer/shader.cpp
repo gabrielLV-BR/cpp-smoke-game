@@ -1,9 +1,22 @@
 #include "./shader.hpp"
 #include "utils/file.hpp"
 
+#include "glad/glad.h"
+
 Shader::Shader(std::string source, ShaderType shader_type)
     : shader_type(shader_type) {
-  handle = glCreateShader(static_cast<uint32_t>(shader_type));
+  uint32_t shader_type_bit = 0;
+
+  switch (shader_type) {
+    case ShaderType::VERTEX:
+      shader_type_bit = GL_VERTEX_SHADER;
+      break;
+    case ShaderType::FRAGMENT:
+      shader_type_bit = GL_FRAGMENT_SHADER;
+      break;
+  }
+
+  handle = glCreateShader(shader_type_bit);
 
   glShaderSource(handle, 1, reinterpret_cast<const char**>(&source), NULL);
   glCompileShader(handle);

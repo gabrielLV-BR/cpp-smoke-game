@@ -2,24 +2,16 @@
 
 #include <memory>
 #include <cstdint>
-#include <vector>
+#include <bitset>
+#include <unordered_map>
 
 #include "renderer/program.hpp"
 
 class ProgramServer {
- private:
-  // TODO remove this if the vector proves to be inneficient
-  //  std::unordered_map<bitset, uint32_t> program_map;
-  std::vector<Program> programs;
-
  public:
-  void store_program(Program program);
-  Program get_program_by_material(StandardMaterial& material);
-  void load_default_programs();
+  static std::unordered_map<Program::bitset, std::shared_ptr<Program>> programs;
+  static void initialize();
 
-  // Singleton stuff
-  static ProgramServer& get_global_instance();
-
- private:
-  ProgramServer();
+  static void store_program_for_bits(Program p, Program::bitset bits);
+  static std::shared_ptr<Program> get_program_for(Material*);
 };

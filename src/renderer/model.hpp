@@ -4,10 +4,10 @@
 #include <memory>
 #include <vector>
 
-#include "renderer/material.hpp"
 #include "renderer/mesh.hpp"
+#include "math/transform.hpp"
 
 struct Model {
   std::vector<Mesh> meshes;
-  std::shared_ptr<StandardMaterial> material;
+  Transform transform;
 };

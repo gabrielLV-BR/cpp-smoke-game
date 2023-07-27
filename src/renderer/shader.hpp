@@ -4,9 +4,7 @@
 #include <iostream>
 #include <string>
 
-#include "glad/glad.h"
-
-enum ShaderType { VERTEX = GL_VERTEX_SHADER, FRAGMENT = GL_FRAGMENT_SHADER };
+enum ShaderType { VERTEX, FRAGMENT };
 
 struct Shader {
   uint32_t handle;

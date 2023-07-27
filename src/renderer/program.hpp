@@ -1,10 +1,28 @@
 #pragma once
 
+#include <string>
+#include <bitset>
+
 #include "./shader.hpp"
 #include "./texture.hpp"
-#include "glm/mat4x4.hpp"
+
+// forward declare
+namespace glm {
+struct mat4;
+};  // namespace glm
+
+namespace ProgramUniforms {
+const static std::string COLOR = "uColor";
+}
+
+enum ProgramBits {
+  DIFFUSE_MAP = 1 << 0,
+  NORMAL_MAP = 1 << 1,
+};
 
 struct Program {
+  using bitset = std::bitset<8>;
+
   uint32_t handle;
 
   Program(Shader vertex, Shader fragment);

@@ -62,7 +62,6 @@ int main() {
   glCullFace(GL_FRONT);
 
   ProgramServer::initialize();
-  ProgramServer::load_default_programs();
 
   glm::mat4 model_matrix = glm::mat4(1.0f);
   model_matrix = glm::rotate(model_matrix, glm::radians(45.0f),
