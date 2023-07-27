@@ -34,7 +34,11 @@ Mesh::Mesh(std::string name, std::vector<Vertex> vertices,
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices)
     : Mesh("", vertices, indices) {}
 
-Mesh::~Mesh() { glDeleteVertexArrays(1, &vao); }
+Mesh::~Mesh() {
+  vertex_buffer.destroy();
+  index_buffer.destroy();
+  glDeleteVertexArrays(1, &vao);
+}
 
 uint32_t Mesh::index_count() const { return index_buffer.data.size(); }
 uint32_t Mesh::vertex_count() const { return vertex_buffer.data.size(); }

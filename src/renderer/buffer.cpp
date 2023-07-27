@@ -1,9 +1,10 @@
 #include "./buffer.hpp"
 
 #include "glad/glad.h"
+#include <vector>
 
-template class Buffer<Vertex>;
-template class Buffer<uint32_t>;
+template <typename T>
+Buffer<T>::Buffer() {}
 
 template <typename T>
 Buffer<T>::Buffer(uint32_t target, std::vector<T> data)
@@ -14,11 +15,6 @@ Buffer<T>::Buffer(uint32_t target, std::vector<T> data)
 }
 
 template <typename T>
-Buffer<T>::~Buffer() {
-  glDeleteBuffers(1, &handle);
-}
-
-template <typename T>
 void Buffer<T>::bind() {
   glBindBuffer(target, handle);
 }
@@ -26,4 +22,9 @@ void Buffer<T>::bind() {
 template <typename T>
 void Buffer<T>::unbind() {
   glBindBuffer(target, 0);
+}
+
+template <typename T>
+void Buffer<T>::destroy() {
+  glDeleteBuffers(1, &handle);
 }
