@@ -8,12 +8,10 @@ add_executable(
     ${PROJECT_NAME}
 
     src/main.cpp    
-    src/math/camera.cpp
-    src/math/vector.cpp
-    src/renderer/texture.cpp
-    src/renderer/shader.cpp
+    src/renderer/buffer.cpp
     src/renderer/mesh.cpp
-    src/renderer/material.cpp
+    src/renderer/program.cpp
+    src/renderer/texture.cpp
     src/loaders/obj_loader.cpp
     src/servers/program_server.cpp
     src/utils/file.cpp

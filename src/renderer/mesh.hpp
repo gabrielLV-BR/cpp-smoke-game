@@ -3,7 +3,6 @@
 #include <cstdint>
 #include <string>
 
-#include "glad/glad.h"
 #include "renderer/buffer.hpp"
 #include "renderer/material.hpp"
 #include "renderer/vertex.hpp"
