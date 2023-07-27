@@ -1,16 +1,5 @@
 #pragma once
 
-<<<<<<< HEAD
-#include <string>
-#include <unordered_map>
-
-#include "glad/glad.h"
-#include "glm/gtc/type_ptr.hpp"
-#include "glm/mat4x4.hpp"
-
-#include "./material.hpp"
-=======
->>>>>>> d27f141ba1857a353d8e1b7469aa15d3daff0602
 #include "./shader.hpp"
 #include "./texture.hpp"
 #include "glm/mat4x4.hpp"
@@ -27,7 +16,8 @@ struct Program {
   void set_uniform(std::string name, T value) {
     int location = get_uniform_location(name);
 
-    if (location == -1) return;
+    if (location == -1)
+      return;
 
     _internal_set_uniform(location, value);
   }
