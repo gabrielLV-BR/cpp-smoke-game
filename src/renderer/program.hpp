@@ -6,8 +6,6 @@
 #include "./shader.hpp"
 #include "./texture.hpp"
 
-#include "glm/mat4x4.hpp"
-
 namespace ProgramUniforms {
 const static std::string COLOR = "uColor";
 }
@@ -50,7 +48,6 @@ struct Program {
 
   void _internal_set_uniform(int location, int value);
   void _internal_set_uniform(int location, float value);
-  void _internal_set_uniform(int location, const glm::mat4& mat);
   void _internal_set_uniform(int location, const Texture& t);
 };
 

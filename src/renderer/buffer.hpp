@@ -3,6 +3,8 @@
 #include <vector>
 #include <cstdint>
 
+#include "renderer/vertex.hpp"
+
 template <typename T>
 struct Buffer {
   std::vector<T> data;
@@ -16,3 +18,6 @@ struct Buffer {
   void unbind();
   void destroy();
 };
+
+extern template struct Buffer<uint32_t>;
+extern template struct Buffer<Vertex>;

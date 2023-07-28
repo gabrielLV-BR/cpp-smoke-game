@@ -1,28 +1,19 @@
 cmake_minimum_required(VERSION 3.17)
 project(game)
 
-set("SOURCE_DIR" "${CMAKE_SOURCE_DIR}/src/")
-set("MODULES_DIR" "${CMAKE_SOURCE_DIR}/modules/")
+set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/src/")
+set(MODULES_DIR "${CMAKE_SOURCE_DIR}/modules/")
+set(GLAD_SOURCES "${MODULES_DIR}/glad/glad.c")
 
-add_executable(
-    ${PROJECT_NAME}
-
-    src/main.cpp    
-
-    src/renderer/program.cpp
-    src/renderer/buffer.cpp
-    src/renderer/texture.cpp
-    src/renderer/mesh.cpp
-
-    src/loaders/obj_loader.cpp
-    src/servers/program_server.cpp
-    src/utils/file.cpp
-
-    modules/glad/glad.c
+set(COMMON_COMPILE_DEFINITIONS ASSETS="${CMAKE_SOURCE_DIR}/assets/")
+set(COMMON_INCLUDE_DIRECTORIES 
+    "${SOURCE_DIR}"
+    "${MODULES_DIR}"
+    "${MODULES_DIR}/glfw/include/"
+    "${MODULES_DIR}/glm/"
+    "${MODULES_DIR}/"
 )
 
-target_compile_definitions(${PROJECT_NAME} PRIVATE ASSETS="${CMAKE_SOURCE_DIR}/assets/")
-target_include_directories(${PROJECT_NAME} PRIVATE "${SOURCE_DIR}" "${MODULES_DIR}")
-
+add_subdirectory(src/)
 add_subdirectory(modules/)
-add_subdirectory(tests/)
+# add_subdirectory(tests/)

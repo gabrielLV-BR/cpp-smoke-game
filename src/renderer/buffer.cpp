@@ -3,6 +3,9 @@
 #include "glad/glad.h"
 #include <vector>
 
+template struct Buffer<Vertex>;
+template struct Buffer<uint32_t>;
+
 template <typename T>
 Buffer<T>::Buffer() {}
 

@@ -6,8 +6,8 @@
 struct Color {
   float r, g, b;
 
-  Color() : array{0, 0, 0} {}
-  Color(float r, float g, float b) : array{r, g, b} {}
+  Color();
+  Color(float r, float g, float b);
 
   union {
     float array[3];

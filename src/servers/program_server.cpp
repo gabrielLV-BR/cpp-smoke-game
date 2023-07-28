@@ -1,5 +1,8 @@
 #include "./program_server.hpp"
 
+std::unordered_map<Program::bitset, std::shared_ptr<Program>>
+    ProgramServer::programs = {};
+
 void ProgramServer::initialize() {
   {  // COLORED
     Shader colored_frag_shader = Shader::load_from_file(

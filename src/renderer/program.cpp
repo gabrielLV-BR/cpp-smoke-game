@@ -38,10 +38,6 @@ void Program::_internal_set_uniform(int location, float value) {
   glUniform1f(location, value);
 }
 
-void Program::_internal_set_uniform(int location, const glm::mat4& mat) {
-  glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
-}
-
 void Program::_internal_set_uniform(int location, const Texture& t) {
   glUniform1i(location, t.handle);
 }

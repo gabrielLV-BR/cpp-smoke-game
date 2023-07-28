@@ -1,9 +1,10 @@
+#include "./obj_loader.hpp"
+
 #include <stdio.h>
 #include <cstdint>
 #include <fstream>
 #include <iostream>
 
-#include "./obj_loader.hpp"
 ObjLoader::ObjLoader(ObjLoaderConfig config) : config(config) {}
 
 Model ObjLoader::load(const std::string name) {
