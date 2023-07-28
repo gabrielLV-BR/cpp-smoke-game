@@ -6,6 +6,7 @@
 #include <unordered_map>
 
 #include "renderer/program.hpp"
+#include "renderer/material.hpp"
 
 class ProgramServer {
  public:

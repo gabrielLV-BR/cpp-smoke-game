@@ -33,7 +33,7 @@ class ObjLoader {
   std::vector<Vector3> vertex_positions;
   std::vector<Vector3> vertex_normals;
   std::vector<Vector2> vertex_uvs;
-  std::vector<BasicMaterial> materials;
+  std::vector<Material> materials;
 
   std::unordered_map<Vertex, uint32_t> index_map;
 

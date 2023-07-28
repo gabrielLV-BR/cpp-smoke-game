@@ -6,10 +6,7 @@
 #include "./shader.hpp"
 #include "./texture.hpp"
 
-// forward declare
-namespace glm {
-struct mat4;
-};  // namespace glm
+#include "glm/mat4x4.hpp"
 
 namespace ProgramUniforms {
 const static std::string COLOR = "uColor";

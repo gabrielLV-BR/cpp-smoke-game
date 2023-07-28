@@ -73,7 +73,7 @@ void ObjLoader::read_material(const std::string& material_path) {
     }
   }
 
-  materials.push_back(StandardMaterial(Color{1.0, 1.0, 1.0}, maps));
+  materials.push_back(Material(Color{1.0, 1.0, 1.0}, maps));
 }
 
 Vector3 ObjLoader::parse_vector3(const std::string& line, int start, int end) {

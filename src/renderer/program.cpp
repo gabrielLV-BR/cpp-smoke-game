@@ -1,4 +1,4 @@
-#include "program.hpp"
+#include "./program.hpp"
 
 #include <string>
 #include <unordered_map>

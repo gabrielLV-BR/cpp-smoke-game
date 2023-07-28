@@ -18,8 +18,8 @@
 #include "utils/color.hpp"
 #include "utils/file.hpp"
 
-#include "GLFW/glfw3.h"
 #include "glad/glad.h"
+#include "GLFW/glfw3.h"
 
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"

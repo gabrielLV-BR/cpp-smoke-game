@@ -1,10 +1,5 @@
 #include "./program_server.hpp"
 
-#include <memory>
-
-#include "renderer/material.hpp"
-#include "renderer/program.hpp"
-
 void ProgramServer::initialize() {
   {  // COLORED
     Shader colored_frag_shader = Shader::load_from_file(
