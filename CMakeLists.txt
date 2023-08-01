@@ -9,6 +9,7 @@ set(COMMON_COMPILE_DEFINITIONS ASSETS="${CMAKE_SOURCE_DIR}/assets/")
 set(COMMON_INCLUDE_DIRECTORIES 
     "${SOURCE_DIR}"
     "${MODULES_DIR}"
+    "${MODULES_DIR}/assimp/include/"
     "${MODULES_DIR}/glfw/include/"
     "${MODULES_DIR}/glm/"
     "${MODULES_DIR}/"

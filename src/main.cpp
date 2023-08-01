@@ -28,6 +28,10 @@
 #include "glm/vec3.hpp"
 #include "glm/vec4.hpp"
 
+#include "assimp/Importer.hpp"  // C++ importer interface
+#include "assimp/scene.h"       // Output data structure
+#include "assimp/postprocess.h"
+
 // Remove false-positive errors
 #ifndef ASSETS
 #define ASSETS ""
@@ -67,14 +71,56 @@ int main() {
   model_matrix = glm::rotate(model_matrix, glm::radians(45.0f),
                              glm::vec3(-1.0f, 0.0f, 0.0f));
 
-  ObjLoaderConfig config(ASSETS "models/");
-  ObjLoader loader(config);
+  Assimp::Importer importer;
 
-  loader.load("suzanne.obj");
+  const aiScene* scene = importer.ReadFile(ASSETS "models/dog/dog.obj", 0);
 
-  Mesh mesh(loader.vertices, loader.indices);
+  if (scene == nullptr) {
+    std::cerr << "Error opening file!\n";
+    return -1;
+  }
 
-  Texture texture = Texture::from_file(ASSETS "models/dice/dice.png");
+  const aiMesh* _mesh = scene->mMeshes[0];
+
+  std::vector<Vertex> vertices;
+  std::vector<uint32_t> indices;
+
+  unsigned int normal_index = 0;
+  for (int i = 0; i < _mesh->mNumVertices; i += 3) {
+    Vector3 vertex_position(
+      _mesh->mVertices[i].x, 
+      _mesh->mVertices[i].y,
+      _mesh->mVertices[i].z
+    );
+
+    Vector3 vertex_normal(
+      _mesh->mNormals[i].x, 
+      _mesh->mNormals[i].y,
+      _mesh->mNormals[i].z
+    );
+
+    assert(_mesh->mTextureCoords != nullptr);
+    assert(_mesh->mNumUVComponents[0] > 0);
+
+    Vector2 vertex_uv(
+      _mesh->mTextureCoords[0][i].x,
+      _mesh->mTextureCoords[0][i].y
+    );
+
+    vertices.emplace_back(Vertex(vertex_position, vertex_normal, vertex_uv));
+  }
+
+  for(int i = 0 ; i < _mesh->mNumFaces; i ++) {
+    std::cout << _mesh->mFaces[i].mNumIndices << std::endl;
+    indices.push_back(_mesh->mFaces[i].mIndices[0]);
+    indices.push_back(_mesh->mFaces[i].mIndices[1]);
+    indices.push_back(_mesh->mFaces[i].mIndices[2]);
+  }
+
+  Mesh mesh(vertices, indices);
+
+  Texture texture =
+      Texture::from_file(ASSETS "models/dog/textures/youlied.png");
 
   std::string vertex_source =
       utils::read_file_contents(ASSETS "shaders/basic.vert.glsl");
@@ -97,13 +143,12 @@ int main() {
                                glm::vec3(0.2, 1.0, 0.0));
 
     program.bind();
-
-    program.set_uniform<float>("uTime", elapsed_time);
-    program.set_uniform<glm::mat4>("uModel", model_matrix);
-    program.set_uniform<int>("uTexture", 0);
-
     texture.bind();
     mesh.bind();
+
+    program.set_uniform<float>("uTime", elapsed_time);
+    // program.set_uniform<glm::mat4>("uModel", model_matrix);
+    program.set_uniform<int>("uTexture", 0);
 
     glDrawElements(GL_TRIANGLES, mesh.index_count(), GL_UNSIGNED_INT, 0);
     // glDrawArrays(GL_TRIANGLES, 0, mesh.vertex_count());
