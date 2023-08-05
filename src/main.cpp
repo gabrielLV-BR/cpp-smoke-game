@@ -82,42 +82,88 @@ int main() {
 
   const aiMesh* _mesh = scene->mMeshes[0];
 
-  std::vector<Vertex> vertices;
-  std::vector<uint32_t> indices;
+  // unsigned int normal_index = 0;
+  // for (int i = 0; i < _mesh->mNumVertices; i += 3) {
+  //   Vector3 vertex_position(
+  //     _mesh->mVertices[i].x, 
+  //     _mesh->mVertices[i].y,
+  //     _mesh->mVertices[i].z
+  //   );
 
-  unsigned int normal_index = 0;
-  for (int i = 0; i < _mesh->mNumVertices; i += 3) {
-    Vector3 vertex_position(
-      _mesh->mVertices[i].x, 
-      _mesh->mVertices[i].y,
-      _mesh->mVertices[i].z
-    );
+  //   Vector3 vertex_normal(
+  //     _mesh->mNormals[i].x, 
+  //     _mesh->mNormals[i].y,
+  //     _mesh->mNormals[i].z
+  //   );
 
-    Vector3 vertex_normal(
-      _mesh->mNormals[i].x, 
-      _mesh->mNormals[i].y,
-      _mesh->mNormals[i].z
-    );
+  //   assert(_mesh->mTextureCoords != nullptr);
+  //   assert(_mesh->mNumUVComponents[0] > 0);
 
-    assert(_mesh->mTextureCoords != nullptr);
-    assert(_mesh->mNumUVComponents[0] > 0);
+  //   Vector2 vertex_uv(
+  //     _mesh->mTextureCoords[0][i].x,
+  //     _mesh->mTextureCoords[0][i].y
+  //   );
 
-    Vector2 vertex_uv(
-      _mesh->mTextureCoords[0][i].x,
-      _mesh->mTextureCoords[0][i].y
-    );
+  //   vertices.emplace_back(vertex_position, vertex_normal, vertex_uv);
+  // }
 
-    vertices.emplace_back(vertex_position, vertex_normal, vertex_uv);
-  }
+  // for(int i = 0 ; i < _mesh->mNumFaces; i ++) {
+  //   std::cout << _mesh->mFaces[i].mNumIndices << std::endl;
+  //   indices.push_back(_mesh->mFaces[i].mIndices[0]);
+  //   indices.push_back(_mesh->mFaces[i].mIndices[1]);
+  //   indices.push_back(_mesh->mFaces[i].mIndices[2]);
+  // }
 
-  for(int i = 0 ; i < _mesh->mNumFaces; i ++) {
-    std::cout << _mesh->mFaces[i].mNumIndices << std::endl;
-    indices.push_back(_mesh->mFaces[i].mIndices[0]);
-    indices.push_back(_mesh->mFaces[i].mIndices[1]);
-    indices.push_back(_mesh->mFaces[i].mIndices[2]);
-  }
+  std::vector<Vertex> vertices = {
+    Vertex(
+      Vector3(-0.5, -0.5, 0.0),
+      Vector3(0.0, 0.0, 0.0),
+      Vector2(0.0, 0.0)
+    ),
+    Vertex(
+      Vector3(0.0, 0.5, 0.0),
+      Vector3(0.0, 0.0, 0.0),
+      Vector2(0.0, 0.0)
+    ),
+    Vertex(
+      Vector3(0.5, -0.5, 0.0),
+      Vector3(0.0, 0.0, 0.0),
+      Vector2(0.0, 0.0)
+    )
+  };
 
-  Mesh mesh(vertices, indices);
+  std::vector<GLuint> indices = { 0, 1, 2 };
+
+  // Mesh mesh(vertices, indices);
+  uint32_t vbo, ebo, vao;
+
+  glGenVertexArrays(1, &vao);
+  glBindVertexArray(vao);
+
+  glGenBuffers(1, &vbo);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);
+  glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+
+  glGenBuffers(1, &ebo);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), indices.data(), GL_STATIC_DRAW);
+
+  int stride = (3 + 3 + 2) * sizeof(float);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
+  glEnableVertexAttribArray(0);
+
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
+                        (void*)(3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
+
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
+                        (void*)(6 * sizeof(float)));
+  glEnableVertexAttribArray(2);
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindVertexArray(0);
+
 
   Texture texture =
       Texture::from_file(ASSETS "models/dog/textures/youlied.png");
@@ -144,14 +190,21 @@ int main() {
 
     program.bind();
     texture.bind();
-    mesh.bind();
+
+    // mesh.bind();
+    glBindVertexArray(vao);
+    int err = glGetError();
 
     program.set_uniform<float>("uTime", elapsed_time);
-    // program.set_uniform<glm::mat4>("uModel", model_matrix);
-    program.set_uniform<int>("uTexture", 0);
+    err = glGetError();
 
-    glDrawElements(GL_TRIANGLES, mesh.index_count(), GL_UNSIGNED_INT, 0);
-    // glDrawArrays(GL_TRIANGLES, 0, mesh.vertex_count());
+    // program.set_uniform<glm::mat4>("uModel", model_matrix);
+    // program.set_uniform<int>("uTexture", 0);
+    glUniform1i(glGetUniformLocation(program.handle, "uTexture"), 0);
+    err = glGetError();
+
+
+    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
     glfwPollEvents();
     glfwSwapBuffers(window);
