@@ -104,5 +104,4 @@ void App::HandleMouseButtonInput(int mouse_button, int action, int mods) {}
 void App::HandleResizing(int new_width, int new_height) {
     this->width = new_width;
     this->height = new_height;
-    // TODO fill this up
 }
