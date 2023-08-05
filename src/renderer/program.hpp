@@ -49,6 +49,8 @@ struct Program {
   void _internal_set_uniform(int location, int value);
   void _internal_set_uniform(int location, float value);
   void _internal_set_uniform(int location, const Texture& t);
+
+  void check_for_errors();
 };
 
 template <>

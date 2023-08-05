@@ -12,7 +12,7 @@
 #include "renderer/texture.hpp"
 #include "renderer/vertex.hpp"
 
-#include "loaders/obj_loader.hpp"
+#include "loaders/model_loader.hpp"
 #include "math/vector.hpp"
 #include "servers/program_server.hpp"
 #include "utils/color.hpp"
@@ -27,10 +27,6 @@
 #include "glm/mat4x4.hpp"
 #include "glm/vec3.hpp"
 #include "glm/vec4.hpp"
-
-#include "assimp/Importer.hpp"  // C++ importer interface
-#include "assimp/scene.h"       // Output data structure
-#include "assimp/postprocess.h"
 
 // Remove false-positive errors
 #ifndef ASSETS
@@ -71,49 +67,6 @@ int main() {
   model_matrix = glm::rotate(model_matrix, glm::radians(45.0f),
                              glm::vec3(-1.0f, 0.0f, 0.0f));
 
-  Assimp::Importer importer;
-
-  const aiScene* scene = importer.ReadFile(ASSETS "models/dog/dog.obj", 0);
-
-  if (scene == nullptr) {
-    std::cerr << "Error opening file!\n";
-    return -1;
-  }
-
-  const aiMesh* _mesh = scene->mMeshes[0];
-
-  // unsigned int normal_index = 0;
-  // for (int i = 0; i < _mesh->mNumVertices; i += 3) {
-  //   Vector3 vertex_position(
-  //     _mesh->mVertices[i].x, 
-  //     _mesh->mVertices[i].y,
-  //     _mesh->mVertices[i].z
-  //   );
-
-  //   Vector3 vertex_normal(
-  //     _mesh->mNormals[i].x, 
-  //     _mesh->mNormals[i].y,
-  //     _mesh->mNormals[i].z
-  //   );
-
-  //   assert(_mesh->mTextureCoords != nullptr);
-  //   assert(_mesh->mNumUVComponents[0] > 0);
-
-  //   Vector2 vertex_uv(
-  //     _mesh->mTextureCoords[0][i].x,
-  //     _mesh->mTextureCoords[0][i].y
-  //   );
-
-  //   vertices.emplace_back(vertex_position, vertex_normal, vertex_uv);
-  // }
-
-  // for(int i = 0 ; i < _mesh->mNumFaces; i ++) {
-  //   std::cout << _mesh->mFaces[i].mNumIndices << std::endl;
-  //   indices.push_back(_mesh->mFaces[i].mIndices[0]);
-  //   indices.push_back(_mesh->mFaces[i].mIndices[1]);
-  //   indices.push_back(_mesh->mFaces[i].mIndices[2]);
-  // }
-
   std::vector<Vertex> vertices = {
     Vertex(
       Vector3(-0.5, -0.5, 0.0),
@@ -135,7 +88,7 @@ int main() {
   std::vector<GLuint> indices = { 0, 1, 2 };
 
   // Mesh mesh(vertices, indices);
-  uint32_t vbo, ebo, vao;
+  uint32_t vbo{0}, ebo{0}, vao{0};
 
   glGenVertexArrays(1, &vao);
   glBindVertexArray(vao);
@@ -179,6 +132,7 @@ int main() {
   Program program(vertex_shader, fragment_shader);
 
   float elapsed_time = 0;
+
   while (!glfwWindowShouldClose(window)) {
     elapsed_time = static_cast<float>(glfwGetTime());
 
@@ -193,16 +147,11 @@ int main() {
 
     // mesh.bind();
     glBindVertexArray(vao);
-    int err = glGetError();
 
     program.set_uniform<float>("uTime", elapsed_time);
-    err = glGetError();
-
     // program.set_uniform<glm::mat4>("uModel", model_matrix);
     // program.set_uniform<int>("uTexture", 0);
     glUniform1i(glGetUniformLocation(program.handle, "uTexture"), 0);
-    err = glGetError();
-
 
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
