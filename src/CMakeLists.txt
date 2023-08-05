@@ -1,4 +1,4 @@
-add_executable(${PROJECT_NAME} main.cpp ${GLAD_SOURCES})
+add_executable(${PROJECT_NAME} main.cpp app.cpp ${GLAD_SOURCES})
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE ${COMMON_COMPILE_DEFINITIONS})
 target_include_directories(${PROJECT_NAME} PRIVATE ${COMMON_COMPILE_DEFINITIONS})
