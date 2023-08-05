@@ -30,11 +30,11 @@
 #include "GLFW/glfw3.h"
 
 App::App(uint32_t width, uint32_t height, char* title) {
-    _CreateWindowing();
-    _InitializeRendering();
+    CreateWindowing();
+    InitializeRendering();
 }
 
-void App::_CreateWindowing() {
+void App::CreateWindowing() {
     if (glfwInit() != GLFW_TRUE) {
         throw std::runtime_error("[ERROR] Error initializing GLFW");
     }
@@ -82,8 +82,14 @@ void App::_CreateWindowing() {
         });
 }
 
-void App::_InitializeRendering() {
+void App::InitializeRendering() {
     glfwMakeContextCurrent(window);
+
+    if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) != GL_TRUE) {
+        throw std::runtime_error("[ERROR] Error loading OpenGL");
+    }
+
+    glViewport(0, 0, width, height);
 }
 
 App::~App() {}
@@ -104,4 +110,5 @@ void App::HandleMouseButtonInput(int mouse_button, int action, int mods) {}
 void App::HandleResizing(int new_width, int new_height) {
     this->width = new_width;
     this->height = new_height;
+    glViewport(0, 0, width, height);
 }

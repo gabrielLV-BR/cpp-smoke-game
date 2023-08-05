@@ -28,6 +28,6 @@ class App {
     void HandleMouseButtonInput(int mouse_button, int action, int mods);
     void HandleResizing(int new_width, int new_height);
 
-    void _CreateWindowing();
-    void _InitializeRendering();
+    void CreateWindowing();
+    void InitializeRendering();
 };
