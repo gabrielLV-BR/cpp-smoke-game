@@ -5,6 +5,7 @@
 
 #include "math/vector.hpp"
 
+//TODO maybe generalize Vertex more? allow for other data to be added dynamically
 struct Vertex {
   Vector3 position;
   Vector3 normal;

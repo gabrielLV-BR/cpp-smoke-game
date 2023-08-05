@@ -107,7 +107,7 @@ int main() {
       _mesh->mTextureCoords[0][i].y
     );
 
-    vertices.emplace_back(Vertex(vertex_position, vertex_normal, vertex_uv));
+    vertices.emplace_back(vertex_position, vertex_normal, vertex_uv);
   }
 
   for(int i = 0 ; i < _mesh->mNumFaces; i ++) {
