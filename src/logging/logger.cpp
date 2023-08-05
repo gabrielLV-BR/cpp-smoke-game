@@ -1,6 +1,4 @@
-#include "log.hpp"
-
-using namespace log;
+#include "logger.hpp"
 
 #ifndef NDEBUG
 
@@ -8,24 +6,24 @@ using namespace log;
 
 #include <iostream>
 
-template<typename... T>
+template <typename... T>
 inline void Logger::log(T... data) {
-    std::cout << ...data << std::endl;
+    std::cout << ... data << std::endl;
 }
 
-template<typename... T>
+template <typename... T>
 inline void Logger::error(T... data) {
-    std::cerr << ...data << std::endl;
+    std::cerr << ... data << std::endl;
 }
 
 #else
 
 // release
 
-template<typename... T>
+template <typename... T>
 inline void Logger::log(T... data) {}
 
-template<typename... T>
+template <typename... T>
 inline void Logger::error(T... data) {}
 
 #endif

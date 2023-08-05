@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.17)
 project(game)
 
+set (CMAKE_CXX_STANDARD 17)
+
 set(ASSETS_DIR "${CMAKE_SOURCE_DIR}/assets/")
 set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/src/")
 set(MODULES_DIR "${CMAKE_SOURCE_DIR}/modules/")

@@ -1,20 +1,18 @@
 #include "app.hpp"
 
-#include "log/log.hpp"
-
 #include <exception>
 
-using log::Logger;
+#include "logging/logger.hpp"
 
 int main() {
-  App app(500, 500, "OpenGL Box");
+    App app(500, 500, "OpenGL Box");
 
-  try {
-    app.Run();
-  } catch(const std::exception& e) {
-    Logger::error("Exception while running app: ", e.what());
-    return -1;
-  }
+    try {
+        app.Run();
+    } catch (const std::exception& e) {
+        Logger::error("Exception while running app: ", e.what());
+        return -1;
+    }
 
-  return 0;
+    return 0;
 }

@@ -10,9 +10,9 @@ add_subdirectory(servers/)
 add_subdirectory(renderer/)
 add_subdirectory(math/)
 add_subdirectory(loaders/)
-add_subdirectory(log/)
+add_subdirectory(logging/)
 
 target_link_libraries(
     ${PROJECT_NAME} PRIVATE
-    utils servers renderer math loaders log
+    utils servers renderer math loaders logging
 )
