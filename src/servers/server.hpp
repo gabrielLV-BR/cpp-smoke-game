@@ -9,26 +9,28 @@
 #include "renderer/program.hpp"
 #include "renderer/texture.hpp"
 
-template <typename T, typename K = uint32_t>
+template <typename T>
 class Server {
+   public:
+    using Key = uint32_t;
+
    private:
-    std::unordered_map<K, std::shared_ptr<T>> data;
+    std::vector<std::shared_ptr<T>> data;
 
    public:
     Server();
     ~Server();
 
-    void Store(K key, T value);
-    std::shared_ptr<T> Get(K key);
+    Key Store(T value);
+    std::shared_ptr<T> Get(Key key);
 
-    void Delete(K key);
-    void HasItem(K key);
+    void Delete(Key key);
 };
 
-extern template class Server<Mesh>;
-extern template class Server<Program, Material>;
-extern template class Server<Texture>;
+class MeshServer : Server<Mesh> {};
 
-typedef Server<Mesh> MeshServer;
-typedef Server<Program, Material> ProgramServer;
-typedef Server<Texture> TextureServer;
+class ProgramServer : Server<Program> {
+    std::shared_ptr<Program> Get(Material material);
+};
+
+class TextureServer : Server<Texture> {};
