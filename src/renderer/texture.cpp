@@ -2,13 +2,10 @@
 
 #include "glad/glad.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb/stb_image.h"
-
 Texture::Texture(const void* data, int width, int height, int channel_count) {
     glGenTextures(1, &handle);
 
-    bind();
+    Bind();
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -20,30 +17,18 @@ Texture::Texture(const void* data, int width, int height, int channel_count) {
                  GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
 
-    unbind();
+    Unbind();
 }
 
 Texture::~Texture() {
     glDeleteTextures(1, &handle);
 }
 
-Texture Texture::from_file(const std::string& path) {
-    int width, height, channel_count;
-    unsigned char* data =
-        stbi_load(path.c_str(), &width, &height, &channel_count, 0);
-
-    Texture t(data, width, height, channel_count);
-
-    stbi_image_free(data);
-
-    return t;
-}
-
-void Texture::bind() const {
+void Texture::Bind() const {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, handle);
 }
 
-void Texture::unbind() const {
+void Texture::Unbind() const {
     glBindTexture(GL_TEXTURE_2D, 0);
 }

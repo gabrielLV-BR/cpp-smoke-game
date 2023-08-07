@@ -9,18 +9,18 @@
 #include "utils/color.hpp"
 
 struct Material {
-  // this must be set up by program_server
-  std::shared_ptr<Program> _program;
+    // this must be set up by program_server
+    std::shared_ptr<Program> _program;
 
-  Color color;
-  std::vector<Texture> maps;
+    Color color;
+    std::vector<Texture> maps;
 
-  Material();
-  Material(Color color);
-  Material(Color color, std::vector<Texture> maps);
+    Material();
+    Material(Color color);
+    Material(Color color, std::vector<Texture> maps);
 
-  Program::bitset get_bits() const;
+    Program::bitset GetBits() const;
 
-  void bind() const;
-  void unbind() const;
+    void Bind() const;
+    void Unbind() const;
 };

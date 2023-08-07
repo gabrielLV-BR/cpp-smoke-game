@@ -10,11 +10,9 @@ Material::Material() : Material(Color(0.0, 0.0, 0.0), {}) {}
 Material::Material(Color color) : Material(color, {}) {}
 
 Material::Material(Color color, std::vector<Texture> maps)
-    : color(color),
-      maps(maps),
-      _program(ProgramServer::get_program_for(this)) {}
+    : color(color), maps(maps) {}
 
-Program::bitset Material::get_bits() const {
+Program::bitset Material::GetBits() const {
     Program::bitset bits;
 
     // TODO allow adjustable behaviour, like graphics options
@@ -24,11 +22,11 @@ Program::bitset Material::get_bits() const {
     return bits;
 }
 
-void Material::bind() const {
-    _program->bind();
-    _program->set_uniform<Color>(ProgramUniforms::COLOR, color);
+void Material::Bind() const {
+    _program->Bind();
+    _program->SetUniform<Color>(ProgramUniforms::COLOR, color);
 }
 
-void Material::unbind() const {
-    _program->unbind();
+void Material::Unbind() const {
+    _program->Unbind();
 }

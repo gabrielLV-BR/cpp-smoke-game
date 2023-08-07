@@ -9,8 +9,6 @@ struct Texture {
     Texture(const void* data, int width, int height, int channel_count);
     ~Texture();
 
-    static Texture from_file(const std::string& path);
-
-    void bind() const;
-    void unbind() const;
+    void Bind() const;
+    void Unbind() const;
 };
