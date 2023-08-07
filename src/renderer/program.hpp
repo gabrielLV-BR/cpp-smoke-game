@@ -2,6 +2,7 @@
 
 #include <string>
 #include <cstdint>
+#include <bitset>
 
 #include "./shader.hpp"
 #include "./texture.hpp"
@@ -16,7 +17,7 @@ enum ProgramBits {
 };
 
 struct Program {
-    using bitset = uint32_t;
+    using bitset = std::bitset<8>;
 
     uint32_t handle;
 

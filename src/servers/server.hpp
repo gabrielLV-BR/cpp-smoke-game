@@ -18,10 +18,7 @@ class Server {
     std::vector<std::shared_ptr<T>> data;
 
    public:
-    Server();
-    ~Server();
-
-    Key Store(T value);
+    Key Store(T* value);
     std::shared_ptr<T> Get(Key key);
 
     void Delete(Key key);
@@ -29,9 +26,16 @@ class Server {
 
 class MeshServer : public Server<Mesh> {};
 
-class ProgramServer : public Server<Program> {
-   public:
-    std::shared_ptr<Program> Get(Material material);
-};
-
 class TextureServer : public Server<Texture> {};
+
+// program server is different enough to deserve its own thing
+
+class ProgramServer {
+   private:
+    std::unordered_map<Program::bitset, std::shared_ptr<Program>> data;
+
+   public:
+    void Store(Program::bitset bitset, Program* program);
+    std::shared_ptr<Program> Get(Program::bitset bitset);
+    std::shared_ptr<Program> GetForMaterial(Material material);
+};

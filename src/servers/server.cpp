@@ -1,13 +1,7 @@
 #include "server.hpp"
 
 template <typename T>
-Server<T>::Server() {}
-
-template <typename T>
-Server<T>::~Server() {}
-
-template <typename T>
-Server<T>::Key Server<T>::Store(T value) {
+Server<T>::Key Server<T>::Store(T* value) {
     data.push_back(value);
 
     return static_cast<Key>(data.size() - 1);
@@ -26,9 +20,16 @@ void Server<T>::Delete(Key key) {
     data.erase(key);
 }
 
-//
+// Program server
 
-std::shared_ptr<Program> ProgramServer::Get(Material material) {
-    Key key = static_cast<Key>(material.GetBits());
-    return Server<Program>::Get(key);
+void ProgramServer::Store(Program::bitset bitset, Program* program) {
+    data[bitset] = std::shared_ptr<Program>(program);
+}
+
+std::shared_ptr<Program> ProgramServer::Get(Program::bitset bitset) {
+    return data[bitset];
+}
+
+std::shared_ptr<Program> ProgramServer::GetForMaterial(Material material) {
+    return data[material.GetBits()];
 }
