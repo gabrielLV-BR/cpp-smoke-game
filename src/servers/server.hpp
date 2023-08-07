@@ -27,10 +27,11 @@ class Server {
     void Delete(Key key);
 };
 
-class MeshServer : Server<Mesh> {};
+class MeshServer : public Server<Mesh> {};
 
-class ProgramServer : Server<Program> {
+class ProgramServer : public Server<Program> {
+   public:
     std::shared_ptr<Program> Get(Material material);
 };
 
-class TextureServer : Server<Texture> {};
+class TextureServer : public Server<Texture> {};

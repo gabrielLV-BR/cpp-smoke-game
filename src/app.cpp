@@ -15,7 +15,7 @@
 
 #include "loaders/model_loader.hpp"
 #include "math/vector.hpp"
-#include "servers/program_server.hpp"
+#include "servers/server.hpp"
 #include "utils/color.hpp"
 #include "utils/file.hpp"
 

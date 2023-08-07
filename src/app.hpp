@@ -4,6 +4,8 @@
 
 #include "glm/vec2.hpp"
 
+#include "GLFW/glfw3.h"
+
 class App {
    private:
     uint32_t width;
