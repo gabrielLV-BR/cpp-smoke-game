@@ -1,7 +1,7 @@
 #include "server.hpp"
 
 template <typename T>
-Server<T>::Key Server<T>::Store(T* value) {
+typename Server<T>::Key Server<T>::Store(T* value) {
     data.push_back(value);
 
     return static_cast<Key>(data.size() - 1);

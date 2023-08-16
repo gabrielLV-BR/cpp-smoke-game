@@ -11,7 +11,7 @@ std::shared_ptr<Texture> TextureLoader::Load(const std::string path) {
     unsigned char* data =
         stbi_load(path.c_str(), &width, &height, &channel_count, 0);
 
-    Texture t(data, width, height, channel_count);
+    Texture* t = new Texture(data, width, height, channel_count);
 
     auto key = texture_server.Store(t);
 

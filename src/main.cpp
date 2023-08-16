@@ -10,7 +10,7 @@ int main() {
     try {
         app.Run();
     } catch (const std::exception& e) {
-        Logger::error("Exception while running app: ", e.what());
+        std::cerr << e.what();
         return -1;
     }
 

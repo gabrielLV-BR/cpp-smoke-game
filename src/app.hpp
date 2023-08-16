@@ -4,18 +4,19 @@
 
 #include "glm/vec2.hpp"
 
+#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
 class App {
    private:
     uint32_t width;
     uint32_t height;
-    char* title;
+    const char* title;
 
     GLFWwindow* window;
 
    public:
-    App(uint32_t width, uint32_t height, char* title);
+    App(uint32_t width, uint32_t height, const char* title);
     ~App();
 
     void Run();

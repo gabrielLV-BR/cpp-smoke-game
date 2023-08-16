@@ -26,10 +26,8 @@
 #include "glm/vec3.hpp"
 #include "glm/vec4.hpp"
 
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
-
-App::App(uint32_t width, uint32_t height, char* title) {
+App::App(uint32_t width, uint32_t height, const char* title)
+    : width(width), height(height), title(title) {
     CreateWindowing();
     InitializeRendering();
 }
@@ -41,7 +39,7 @@ void App::CreateWindowing() {
 
     // TODO detect available versions (somehow)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
