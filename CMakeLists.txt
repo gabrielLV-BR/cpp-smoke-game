@@ -21,3 +21,5 @@ set(COMMON_INCLUDE_DIRECTORIES
 add_subdirectory(src/)
 add_subdirectory(modules/)
 # add_subdirectory(tests/)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE ${CMAKE_DL_LIBS})

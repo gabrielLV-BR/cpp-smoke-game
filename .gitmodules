@@ -10,3 +10,6 @@
 [submodule "modules/assimp"]
 	path = modules/assimp
 	url = https://github.com/assimp/assimp.git
+[submodule "modules/flecs"]
+	path = modules/flecs
+	url = https://github.com/SanderMertens/flecs.git
