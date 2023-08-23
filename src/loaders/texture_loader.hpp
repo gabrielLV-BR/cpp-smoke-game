@@ -11,5 +11,5 @@ class TextureLoader {
 
    public:
     TextureLoader(TextureServer&);
-    std::shared_ptr<Texture> Load(const std::string path);
+    TextureServer::Key Load(const std::string path);
 };

@@ -2,7 +2,11 @@
 
 #include <cstdint>
 
+#include "servers/server.hpp"
+
 #include "glm/vec2.hpp"
+
+#include "flecs/flecs.h"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -14,6 +18,12 @@ class App {
     const char* title;
 
     GLFWwindow* window;
+
+    ProgramServer program_server;
+    TextureServer texture_server;
+    MeshServer mesh_server;
+
+    flecs::world ecs_world;
 
    public:
     App(uint32_t width, uint32_t height, const char* title);
@@ -33,4 +43,5 @@ class App {
 
     void CreateWindowing();
     void InitializeRendering();
+    void SetupSystems();
 };

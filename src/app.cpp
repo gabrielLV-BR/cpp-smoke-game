@@ -90,6 +90,10 @@ void App::InitializeRendering() {
     glViewport(0, 0, width, height);
 }
 
+void App::SetupSystems() {
+    //
+}
+
 App::~App() {}
 
 void App::Run() {}

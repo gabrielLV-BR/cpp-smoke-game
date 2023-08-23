@@ -1,4 +1,4 @@
-add_library(renderer buffer.cpp material.cpp mesh.cpp program.cpp shader.cpp texture.cpp)
+add_library(renderer renderer.cpp buffer.cpp material.cpp mesh.cpp program.cpp shader.cpp texture.cpp)
 
 target_link_libraries(renderer utils math)
 target_compile_definitions(renderer PRIVATE ${COMMON_COMPILE_DEFINITIONS})

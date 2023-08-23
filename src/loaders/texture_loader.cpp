@@ -6,7 +6,7 @@
 TextureLoader::TextureLoader(TextureServer& texture_server)
     : texture_server(texture_server) {}
 
-std::shared_ptr<Texture> TextureLoader::Load(const std::string path) {
+TextureServer::Key TextureLoader::Load(const std::string path) {
     int width, height, channel_count;
     unsigned char* data =
         stbi_load(path.c_str(), &width, &height, &channel_count, 0);
@@ -17,5 +17,5 @@ std::shared_ptr<Texture> TextureLoader::Load(const std::string path) {
 
     stbi_image_free(data);
 
-    return texture_server.Get(key);
+    return key;
 }
