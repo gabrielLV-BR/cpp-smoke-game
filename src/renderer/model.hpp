@@ -8,6 +8,6 @@
 #include "math/transform.hpp"
 
 struct Model {
-  std::vector<Mesh> meshes;
-  Transform transform;
+    std::vector<Mesh> meshes;
+    Transform transform;
 };

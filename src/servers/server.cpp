@@ -1,35 +1,22 @@
 #include "server.hpp"
 
-template <typename T>
-typename Server<T>::Key Server<T>::Store(T* value) {
-    data.push_back(value);
-
-    return static_cast<Key>(data.size() - 1);
+template <typename K, typename T>
+void Server<K, T>::Store(K key, T* value) {
+    data.emplace(key, data);
 }
 
-template <typename T>
-std::shared_ptr<T> Server<T>::Get(Key key) {
-    if (key >= data.size())
-        return NULL;
-
+template <typename K, typename T>
+std::shared_ptr<T> Server<K, T>::Get(K key) {
     return data[key];
 }
 
-template <typename T>
-void Server<T>::Delete(Key key) {
+template <typename K, typename T>
+void Server<K, T>::Delete(K key) {
     data.erase(key);
 }
 
 // Program server
 
-void ProgramServer::Store(Program::bitset bitset, Program* program) {
-    data[bitset] = std::shared_ptr<Program>(program);
-}
-
-std::shared_ptr<Program> ProgramServer::Get(Program::bitset bitset) {
-    return data[bitset];
-}
-
 std::shared_ptr<Program> ProgramServer::GetForMaterial(Material material) {
-    return data[material.GetBits()];
+    return Server::Get(material.GetBits());
 }

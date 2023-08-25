@@ -3,39 +3,32 @@
 #include <memory>
 #include <cstdint>
 #include <unordered_map>
+#include <string>
 
 #include "renderer/mesh.hpp"
 #include "renderer/material.hpp"
 #include "renderer/program.hpp"
 #include "renderer/texture.hpp"
 
-template <typename T>
+template <typename K, typename T>
 class Server {
    public:
-    using Key = uint32_t;
+    using Key = K;
 
    private:
-    std::vector<std::shared_ptr<T>> data;
+    std::unordered_map<K, std::shared_ptr<T>> data;
 
    public:
-    Key Store(T* value);
-    std::shared_ptr<T> Get(Key key);
+    void Store(K key, T* value);
+    std::shared_ptr<T> Get(K key);
 
-    void Delete(Key key);
+    void Delete(K key);
 };
 
-class MeshServer : public Server<Mesh> {};
+class MeshServer : public Server<std::string, std::vector<Mesh>> {};
 
-class TextureServer : public Server<Texture> {};
+class TextureServer : public Server<std::string, Texture> {};
 
-// program server is different enough to deserve its own thing
-
-class ProgramServer {
-   private:
-    std::unordered_map<Program::bitset, std::shared_ptr<Program>> data;
-
-   public:
-    void Store(Program::bitset bitset, Program* program);
-    std::shared_ptr<Program> Get(Program::bitset bitset);
+class ProgramServer : public Server<Program::bitset, Program> {
     std::shared_ptr<Program> GetForMaterial(Material material);
 };

@@ -15,8 +15,9 @@ class MeshLoader {
    public:
     MeshLoader(MeshServer& mesh_server);
 
-    std::vector<MeshServer::Key> Load(std::string path);
+    std::vector<MeshServer::Key> LoadFromFile(std::string path);
+    std::vector<MeshServer::Key> Load(const aiScene* scene);
 
    private:
-    Mesh* _LoadMesh(aiMesh* mesh);
+    Mesh* _NewMeshFromRaw(aiMesh* mesh);
 };

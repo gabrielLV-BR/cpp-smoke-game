@@ -13,7 +13,8 @@
 #include "renderer/texture.hpp"
 #include "renderer/vertex.hpp"
 
-#include "loaders/model_loader.hpp"
+#include "loaders/mesh_loader.hpp"
+#include "loaders/texture_loader.hpp"
 #include "math/vector.hpp"
 #include "servers/server.hpp"
 #include "utils/color.hpp"
@@ -25,6 +26,10 @@
 #include "glm/mat4x4.hpp"
 #include "glm/vec3.hpp"
 #include "glm/vec4.hpp"
+
+#ifndef ASSETS
+#define ASSETS ""
+#endif
 
 App::App(uint32_t width, uint32_t height, const char* title)
     : width(width), height(height), title(title) {
@@ -96,7 +101,21 @@ void App::SetupSystems() {
 
 App::~App() {}
 
-void App::Run() {}
+void App::Run() {
+    Model model;
+    MeshLoader mesh_loader(mesh_server);
+
+    {
+        mesh_loader.LoadFromFile(ASSETS"models/suzanne.obj");
+        mesh_loader.LoadFromFile(ASSETS"models/suzanneballer.obj");
+        // model = Model{.meshes = meshes, .transform = Transform::identity()};
+    }
+
+    while (!glfwWindowShouldClose(window)) {
+        glfwPollEvents();
+        glfwSwapBuffers(window);
+    }
+}
 
 void App::Update() {}
 void App::Render() {}
