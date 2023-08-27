@@ -12,7 +12,7 @@
 
 MeshLoader::MeshLoader(MeshServer& mesh_server) : mesh_server(mesh_server) {}
 
-std::vector<MeshServer::Key> MeshLoader::LoadFromFile(std::string path) {
+std::vector<MeshServer::Key> MeshLoader::LoadFromFile(const std::string& path) {
     Assimp::Importer importer;
 
     const aiScene* scene = importer.ReadFile(path, 0);
@@ -21,29 +21,28 @@ std::vector<MeshServer::Key> MeshLoader::LoadFromFile(std::string path) {
         throw std::runtime_error("Error loading mesh");
     }
 
-    std::cout << path << ".len = " << scene->mNumMeshes << std::endl;
-
-    return {};
-    // return Load(scene);
+    return Load(path, scene);
 }
 
-std::vector<MeshServer::Key> MeshLoader::Load(const aiScene* scene) {
-    std::vector<MeshServer::Key> mesh_keys;
-    mesh_keys.reserve(scene->mNumMeshes);
+std::vector<MeshServer::Key> MeshLoader::Load(
+    const std::string& path,
+    const aiScene* scene) {
+    std::vector<Mesh>* meshes = new std::vector<Mesh>();
+    meshes->reserve(scene->mNumMeshes);
 
     for (int i = 0; i < scene->mNumMeshes; i++) {
         aiMesh* raw_mesh = scene->mMeshes[i];
 
-        Mesh* mesh = _NewMeshFromRaw(raw_mesh);
-
-        // auto key = mesh_server.Store(mesh);
-        // mesh_keys.push_back(key);
+        Mesh mesh = _MeshFromRaw(raw_mesh);
+        meshes->push_back(mesh);
     }
 
-    return mesh_keys;
+    mesh_server.Store(path, meshes);
+
+    return;
 }
 
-Mesh* MeshLoader::_NewMeshFromRaw(aiMesh* mesh) {
+Mesh MeshLoader::_MeshFromRaw(aiMesh* mesh) {
     std::string name(mesh->mName.C_Str());
 
     std::vector<Vertex> vertices;
@@ -75,5 +74,5 @@ Mesh* MeshLoader::_NewMeshFromRaw(aiMesh* mesh) {
         }
     }
 
-    return new Mesh(name, vertices, indices);
+    return Mesh(name, vertices, indices);
 }
